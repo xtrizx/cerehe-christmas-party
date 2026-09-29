@@ -1,401 +1,859 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cerehe Engineering Works - Cosplay Christmas Party 2026</title>
+    <title>CEREHE Engineering Works - Cosplay Christmas Party 2026</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Poppins:wght@400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
-    <!-- FontAwesome for Icons -->
+    <!-- FontAwesome for festive icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Poppins:wght@300;400;500;600;700;800&family=Mountains+of+Christmas:wght@700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        christmas: ['"Mountains of Christmas"', 'cursive'],
-                        poppins: ['Poppins', 'sans-serif'],
-                        vibes: ['"Great Vibes"', 'cursive']
+                        sans: ['Poppins', 'sans-serif'],
+                        festive: ['"Mountains of Christmas"', 'cursive'],
+                        fun: ['Fredoka', 'sans-serif']
                     },
                     colors: {
-                        holidayRed: '#b30000',
-                        holidayGreen: '#0b6623',
-                        goldAccent: '#d4af37'
+                        festiveRed: '#c8102e',
+                        festiveGreen: '#0f5132',
+                        festiveGold: '#ffb703',
+                        deepNight: '#07101f',
+                        poolBlue: '#1b263b',
+                        envelopeBg: '#b91c1c'
+                    },
+                    animation: {
+                        'float': 'float 4s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'twinkle': 'twinkle 2s ease-in-out infinite alternate',
+                        'bounce-gentle': 'bounceGentle 2s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        twinkle: {
+                            '0%': { opacity: 0.4, transform: 'scale(0.95)' },
+                            '100%': { opacity: 1, transform: 'scale(1.08)' }
+                        },
+                        bounceGentle: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-6px)' }
+                        }
                     }
                 }
             }
         }
     </script>
     <style>
-        @keyframes snowfall {
-            0% { transform: translateY(-10vh) translateX(0); opacity: 1; }
-            100% { transform: translateY(105vh) translateX(20px); opacity: 0.2; }
-        }
-        .snowflake {
-            position: fixed;
-            top: -10vh;
-            background: white;
-            border-radius: 50%;
+        .string-lights {
+            display: flex;
+            justify-content: space-around;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 0 10px;
             pointer-events: none;
-            animation: snowfall linear infinite;
+            z-index: 20;
         }
-        .party-title {
-            font-family: 'Mountains of Christmas', cursive;
-            font-weight: 700;
-            text-shadow: 3px 3px 0px #0b6623, 6px 6px 15px rgba(0,0,0,0.8);
+        .lightbulb {
+            width: 14px;
+            height: 18px;
+            border-radius: 50% 50% 40% 40%;
+            margin-top: -4px;
+            animation: twinkle 1.2s infinite alternate;
+            box-shadow: 0 0 12px currentColor;
         }
-        /* Envelope Animation */
-        .envelope-container {
-            perspective: 1000px;
+        .light-red { background-color: #ff3333; color: #ff3333; animation-delay: 0.1s; }
+        .light-yellow { background-color: #ffd700; color: #ffd700; animation-delay: 0.3s; }
+        .light-green { background-color: #00ff66; color: #00ff66; animation-delay: 0.5s; }
+        .light-blue { background-color: #00ffff; color: #00ffff; animation-delay: 0.7s; }
+        
+        #snowCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
         }
-        .envelope {
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d;
+        
+        .glass-card {
+            background: rgba(15, 23, 42, 0.82);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
         }
-        .envelope.open .envelope-flap {
+
+        /* Envelope intro styles */
+        #envelopeOverlay {
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
+        }
+        .envelope-flap {
+            transition: transform 0.8s ease-in-out;
+            transform-origin: top;
+        }
+        .envelope-open .envelope-flap {
             transform: rotateX(180deg);
             z-index: 10;
         }
-        .envelope-flap {
-            transition: transform 0.6s ease;
-            transform-origin: top;
-            z-index: 40;
-        }
-        /* Background Venue Image styling */
-        .venue-bg {
-            background-image: linear-gradient(to bottom, rgba(3, 7, 18, 0.85), rgba(3, 7, 18, 0.95)), url('ChatGPT Image Sep 28, 2026, 12_53_49 PM.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+        .envelope-open #invitationCardInside {
+            transform: translateY(-220px) scale(1);
+            opacity: 1;
         }
     </style>
 </head>
-<body class="venue-bg font-poppins text-slate-100 min-h-screen overflow-x-hidden relative">
+<body class="bg-deepNight text-slate-100 font-sans selection:bg-red-600 selection:text-white min-h-screen relative overflow-x-hidden">
 
-    <!-- Snow Effect Container -->
-    <div id="snow-container" class="absolute inset-0 overflow-hidden pointer-events-none z-50"></div>
-
-    <!-- 1. ENVELOPE INTRO SCREEN -->
-    <div id="intro-screen" class="fixed inset-0 bg-slate-950/95 z-50 flex flex-col items-center justify-center p-4 transition-opacity duration-700">
-        <div class="text-center mb-6">
-            <span class="inline-block bg-holidayRed/80 text-goldAccent text-xs md:text-sm font-semibold uppercase px-4 py-1.5 rounded-full border border-goldAccent/40 shadow-lg tracking-widest mb-3 animate-pulse">
-                🎄 Cerehe Engineering Works 🎄
+    <!-- Envelope Intro Overlay -->
+    <div id="envelopeOverlay" class="fixed inset-0 z-50 bg-gradient-to-br from-deepNight via-slate-900 to-red-950 flex flex-col items-center justify-center p-4">
+        <div class="text-center mb-6 animate-bounce-gentle">
+            <span class="bg-amber-400/20 text-amber-300 border border-amber-400/40 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
+                ✨ Special Holiday Invitation ✨
             </span>
-            <h1 class="text-3xl md:text-5xl font-christmas text-goldAccent tracking-wide">You're Invited!</h1>
-            <p class="text-slate-300 text-sm md:text-base mt-1">Tap the seal below to open your exclusive invitation</p>
-        </div>
-
-        <!-- Envelope Graphic -->
-        <div class="envelope-container relative w-80 md:w-96 h-56 md:h-64 bg-red-900 rounded-lg shadow-2xl border-4 border-goldAccent/70 cursor-pointer flex items-center justify-center envelope" id="envelope" onclick="openEnvelope()">
-            <!-- Envelope Flap -->
-            <div class="envelope-flap absolute top-0 left-0 w-full h-28 bg-red-800 border-b-2 border-goldAccent/60" style="clip-path: polygon(0 0, 50% 100%, 100% 0);"></div>
-            
-            <!-- Wax Seal Button -->
-            <div class="z-30 bg-goldAccent text-red-950 px-5 py-3 rounded-full flex items-center space-x-2 shadow-2xl border-2 border-yellow-200 transform hover:scale-110 transition-transform">
-                <i class="fa-solid fa-gift text-xl"></i>
-                <span class="text-xs md:text-sm font-bold tracking-wider">Open Invitation</span>
-            </div>
-        </div>
-        <p class="text-xs text-slate-400 mt-6"><i class="fa-solid fa-fingerprint mr-1"></i> Tap envelope to open</p>
-    </div>
-
-    <!-- MAIN APP CONTENT (Hidden until envelope opens) -->
-    <div id="main-content" class="opacity-0 pointer-events-none transition-opacity duration-1000">
-
-        <!-- FLOATING CUSTOMIZER TOGGLE BUTTON -->
-        <button onclick="toggleCustomizer()" class="fixed bottom-6 right-6 z-40 bg-goldAccent text-slate-950 px-4 py-3 rounded-full shadow-2xl font-bold flex items-center space-x-2 border-2 border-white hover:bg-yellow-400 transition-all">
-            <i class="fa-solid fa-gear fa-spin"></i>
-            <span>Uploads & Customizer</span>
-        </button>
-
-        <!-- CUSTOMIZER DRAWER (Hidden by default) -->
-        <div id="customizer-drawer" class="fixed inset-y-0 right-0 w-80 bg-slate-900 border-l border-slate-700 z-50 p-6 shadow-2xl transform translate-x-full transition-transform duration-300 overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="font-bold text-goldAccent text-lg"><i class="fa-solid fa-sliders mr-2"></i>Quick Uploads</h3>
-                <button onclick="toggleCustomizer()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-            
-            <div class="space-y-6 text-sm">
-                <div>
-                    <label class="block font-semibold mb-2 text-slate-300">Upload Company Logo:</label>
-                    <input type="file" id="logo-upload" accept="image/*" onchange="handleLogoUpload(event)" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-holidayRed file:text-white hover:file:bg-red-700 cursor-pointer">
-                </div>
-
-                <div>
-                    <label class="block font-semibold mb-2 text-slate-300">Upload Printed Invitation Image:</label>
-                    <input type="file" id="poster-upload" accept="image/*" onchange="handlePosterUpload(event)" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-holidayGreen file:text-white hover:file:bg-green-700 cursor-pointer">
-                </div>
-
-                <div>
-                    <label class="block font-semibold mb-2 text-slate-300">Add Venue Slideshow Photo:</label>
-                    <input type="file" id="slide-upload" accept="image/*" onchange="handleSlideUpload(event)" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-goldAccent file:text-slate-950 hover:file:bg-yellow-400 cursor-pointer">
-                </div>
-            </div>
-        </div>
-
-        <!-- HEADER SECTION WITH LOGO & TITLE -->
-        <header class="relative py-10 px-4 text-center border-b border-red-900/30">
-            <!-- Company Logo Display -->
-            <div class="max-w-xs mx-auto mb-4">
-                <div id="logo-container" class="bg-white/10 backdrop-blur-md p-3 rounded-xl border border-white/20 inline-block shadow-lg">
-                    <img id="company-logo" src="https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=300" alt="Cerehe Logo" class="h-12 md:h-16 object-contain mx-auto">
-                </div>
-                <p class="text-xs text-slate-400 mt-1">Cerehe Engineering Works</p>
-            </div>
-
-            <!-- Party Title -->
-            <h1 class="party-title text-4xl sm:text-6xl md:text-7xl text-amber-300 tracking-wider mb-3">
-                Cosplay Christmas Party
+            <h1 class="text-4xl sm:text-6xl font-extrabold font-festive text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-amber-300 to-green-400 mt-3 drop-shadow-lg">
+                You're Invited!
             </h1>
-            <p class="text-slate-300 max-w-xl mx-auto text-sm md:text-base font-light">
-                Gear up for our holiday celebration! Suit up as your favorite character and enjoy a magical evening.
-            </p>
+        </div>
 
-            <!-- Printed Invitation Pop-up Button -->
-            <div class="mt-6">
-                <button onclick="openModal()" class="bg-gradient-to-r from-goldAccent to-yellow-600 text-slate-950 font-bold px-6 py-3 rounded-full shadow-lg hover:scale-105 transition-transform flex items-center justify-center space-x-2 mx-auto border border-yellow-200">
-                    <i class="fa-solid fa-image"></i>
-                    <span>View Printed Invitation Card</span>
+        <!-- Realistic Folded Envelope Container -->
+        <div id="envelopeBox" class="relative w-full max-w-md sm:max-w-lg aspect-[4/3] bg-red-700 rounded-2xl shadow-2xl border-4 border-amber-400/80 p-6 flex flex-col justify-end items-center overflow-hidden cursor-pointer group" onclick="openEnvelope()">
+            
+            <!-- Envelope Back Pocket -->
+            <div class="absolute inset-0 bg-gradient-to-t from-red-900 to-red-700 pointer-events-none rounded-xl"></div>
+
+            <!-- Slide-out Invitation inside Envelope -->
+            <div id="invitationCardInside" class="absolute w-[85%] bg-slate-900 border-2 border-amber-400 p-6 rounded-xl shadow-2xl text-center transform translate-y-32 opacity-0 transition-all duration-1000 z-20">
+                <div class="text-amber-400 font-bold text-xs uppercase tracking-widest mb-1">CEREHE Engineering Works</div>
+                <div class="text-xl sm:text-2xl font-extrabold font-festive text-red-400 mb-2">Cosplay Christmas Party 2026</div>
+                <div class="text-xs text-slate-300 mb-3">December 19, 2026 • Elijosh Resort</div>
+                <div class="text-xs text-green-300 font-semibold bg-green-900/40 py-1 rounded">Unfolding Party Site...</div>
+            </div>
+
+            <!-- Envelope Flap -->
+            <div id="envelopeFlap" class="absolute top-0 left-0 right-0 h-1/2 bg-red-800 border-b-4 border-amber-400/80 rounded-t-2xl shadow-md origin-top flex items-center justify-center z-30" style="clip-path: polygon(0 0, 100% 0, 50% 100%);">
+            </div>
+
+            <!-- Wax Seal / Open Button -->
+            <div class="relative z-40 mb-8 transform group-hover:scale-110 transition duration-300">
+                <button type="button" class="bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-600 text-slate-950 font-black px-8 py-3.5 rounded-full shadow-[0_0_25px_rgba(251,191,36,0.6)] text-base uppercase tracking-wider border-2 border-white flex items-center space-x-2">
+                    <i class="fa-solid fa-gift mr-1"></i>
+                    <span>Open Invitation</span>
                 </button>
             </div>
-        </header>
+        </div>
 
-        <!-- EVENT DETAILS & VENUE SLIDESHOW -->
-        <main class="max-w-4xl mx-auto px-4 py-10 space-y-10">
-
-            <!-- Countdown Timer -->
-            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl backdrop-blur-md text-center">
-                <h3 class="text-goldAccent font-semibold mb-4 text-sm uppercase tracking-widest"><i class="fa-regular fa-clock mr-2"></i>Countdown to Celebration</h3>
-                <div id="countdown" class="grid grid-cols-4 gap-2 max-w-md mx-auto text-center">
-                    <div class="bg-slate-800 p-3 rounded-xl border border-slate-700"><span id="days" class="text-2xl md:text-3xl font-bold text-white block">00</span><span class="text-[10px] text-slate-400 uppercase">Days</span></div>
-                    <div class="bg-slate-800 p-3 rounded-xl border border-slate-700"><span id="hours" class="text-2xl md:text-3xl font-bold text-white block">00</span><span class="text-[10px] text-slate-400 uppercase">Hours</span></div>
-                    <div class="bg-slate-800 p-3 rounded-xl border border-slate-700"><span id="mins" class="text-2xl md:text-3xl font-bold text-white block">00</span><span class="text-[10px] text-slate-400 uppercase">Mins</span></div>
-                    <div class="bg-slate-800 p-3 rounded-xl border border-slate-700"><span id="secs" class="text-2xl md:text-3xl font-bold text-white block">00</span><span class="text-[10px] text-slate-400 uppercase">Secs</span></div>
-                </div>
-            </div>
-
-            <!-- Date, Time & Venue Slideshow Grid -->
-            <div class="grid md:grid-cols-2 gap-6 items-center">
-                <!-- Info Card -->
-                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 md:p-8 space-y-6 shadow-xl backdrop-blur-md">
-                    <div class="flex items-start space-x-4">
-                        <div class="bg-holidayRed/20 text-holidayRed p-3 rounded-xl text-xl"><i class="fa-solid fa-calendar-days"></i></div>
-                        <div>
-                            <h4 class="text-xs text-slate-400 uppercase font-semibold">Date</h4>
-                            <p class="text-lg font-bold text-white">December 19, 2026 (Saturday)</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start space-x-4">
-                        <div class="bg-goldAccent/20 text-goldAccent p-3 rounded-xl text-xl"><i class="fa-solid fa-clock"></i></div>
-                        <div>
-                            <h4 class="text-xs text-slate-400 uppercase font-semibold">Time</h4>
-                            <p class="text-lg font-bold text-white">3:00 PM Onwards</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start space-x-4">
-                        <div class="bg-holidayGreen/20 text-holidayGreen p-3 rounded-xl text-xl"><i class="fa-solid fa-location-dot"></i></div>
-                        <div>
-                            <h4 class="text-xs text-slate-400 uppercase font-semibold">Venue</h4>
-                            <p class="text-lg font-bold text-white">ELijosh Resort & Events Place</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Venue Slideshow Box -->
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl relative h-64 md:h-72">
-                    <div id="slideshow-container" class="absolute inset-0">
-                        <!-- Slides injected by JS -->
-                    </div>
-                    <div class="absolute bottom-3 left-0 right-0 flex justify-center space-x-2 z-10" id="slide-dots">
-                        <!-- Dots injected by JS -->
-                    </div>
-                    <div class="absolute top-3 left-3 bg-slate-950/70 backdrop-blur-md px-3 py-1 rounded-full text-xs text-goldAccent font-medium border border-goldAccent/30 z-10">
-                        <i class="fa-solid fa-images mr-1"></i> Venue Slideshow
-                    </div>
-                </div>
-            </div>
-
-            <!-- Cosplay Contest Reminder -->
-            <div class="bg-gradient-to-r from-red-950/90 via-slate-900 to-green-950/90 border border-goldAccent/40 rounded-2xl p-6 md:p-8 text-center shadow-xl backdrop-blur-md">
-                <div class="text-goldAccent text-3xl mb-3"><i class="fa-solid fa-masks-theater"></i></div>
-                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Cosplay as Your Favorite Character & Win a Special Prize!</h3>
-                <p class="text-slate-300 text-sm max-w-lg mx-auto">Bring out your best costume! Exciting prizes await the best cosplay interpretations of the night.</p>
-            </div>
-
-            <!-- RSVP Section -->
-            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-xl max-w-xl mx-auto backdrop-blur-md">
-                <h3 class="text-xl font-bold text-center text-goldAccent mb-6"><i class="fa-regular fa-envelope-open mr-2"></i>Confirm Your Attendance</h3>
-                <form id="rsvp-form" onsubmit="handleRSVP(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Your Full Name</label>
-                        <input type="text" id="rsvp-name" required placeholder="Enter your name" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-goldAccent">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Will you attend?</label>
-                        <select id="rsvp-status" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-goldAccent">
-                            <option value="Yes">Yes, I will be there! 🎉</option>
-                            <option value="No">Sorry, I won't be able to make it 😢</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="w-full bg-holidayGreen hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition-colors">
-                        Submit RSVP
-                    </button>
-                </form>
-                <div id="rsvp-success" class="hidden text-center text-green-400 font-medium mt-4 p-3 bg-green-950/50 rounded-xl border border-green-800">
-                    <i class="fa-solid fa-circle-check mr-2"></i> Thank you! Your response has been recorded.
-                </div>
-            </div>
-        </main>
-
-        <!-- Footer -->
-        <footer class="text-center py-8 text-xs text-slate-500 border-t border-slate-900">
-            <p>© 2026 Cerehe Engineering Works. All rights reserved.</p>
-        </footer>
-
+        <p class="text-slate-400 text-xs mt-6">Click the seal to open your magical invitation</p>
     </div>
 
-    <!-- PRINTED INVITATION MODAL -->
-    <div id="invite-modal" class="fixed inset-0 bg-slate-950/90 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-4 relative shadow-2xl">
-            <button onclick="closeModal()" class="absolute top-4 right-4 bg-slate-800 hover:bg-slate-700 text-slate-300 w-10 h-10 rounded-full flex items-center justify-center transition-colors z-20">
-                <i class="fa-solid fa-xmark text-lg"></i>
+    <!-- Snowfall Canvas -->
+    <canvas id="snowCanvas"></canvas>
+
+    <!-- Hanging Christmas Lights bar -->
+    <div class="string-lights hidden sm:flex">
+        <span class="lightbulb light-red"></span>
+        <span class="lightbulb light-yellow"></span>
+        <span class="lightbulb light-green"></span>
+        <span class="lightbulb light-blue"></span>
+        <span class="lightbulb light-red"></span>
+        <span class="lightbulb light-yellow"></span>
+        <span class="lightbulb light-green"></span>
+        <span class="lightbulb light-blue"></span>
+        <span class="lightbulb light-red"></span>
+        <span class="lightbulb light-yellow"></span>
+        <span class="lightbulb light-green"></span>
+        <span class="lightbulb light-blue"></span>
+        <span class="lightbulb light-red"></span>
+        <span class="lightbulb light-yellow"></span>
+        <span class="lightbulb light-green"></span>
+        <span class="lightbulb light-blue"></span>
+    </div>
+
+    <!-- Background Music Audio -->
+    <audio id="bgMusic" loop>
+        <source src="https://actions.google.com/sounds/v1/holidays/christmas_bells.ogg" type="audio/ogg">
+    </audio>
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-40 glass-card border-b border-white/10 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <!-- Editable Logo Container -->
+                <div id="logoContainer" class="flex items-center space-x-2 bg-gradient-to-r from-red-600 to-amber-500 text-white font-black px-3 py-1.5 rounded-xl text-sm md:text-base shadow-lg shadow-red-900/30">
+                    <img id="companyLogoImg" src="" alt="Company Logo" class="h-6 object-contain hidden" onerror="this.classList.add('hidden')">
+                    <span id="companyLogoText">CEREHE ENGINEERING</span>
+                </div>
+                <!-- Change Logo Button -->
+                <button onclick="triggerLogoUpload()" title="Upload Company Logo" class="text-xs text-amber-300 bg-slate-800 hover:bg-slate-700 px-2.5 py-1.5 rounded-lg border border-amber-400/30 transition">
+                    <i class="fa-solid fa-pen-to-square"></i> Upload Logo
+                </button>
+                <input type="file" id="logoFileInput" accept="image/*" class="hidden" onchange="handleLogoUpload(event)">
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <!-- Printed Invitation Card Modal Trigger & Uploader -->
+                <button onclick="openPrintedModal()" class="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 px-3 py-1.5 rounded-full text-xs font-bold shadow-md transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-image"></i>
+                    <span>View / Download Printed Card</span>
+                </button>
+                <button onclick="toggleMusic()" id="musicToggleBtn" class="flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 px-3 py-1.5 rounded-full text-xs font-semibold border border-amber-400/30 transition">
+                    <i class="fa-solid fa-volume-xmark" id="musicIcon"></i>
+                    <span id="musicText" class="hidden sm:inline">Music: OFF</span>
+                </button>
+                <a href="#rsvp" class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white px-4 py-1.5 rounded-full text-xs md:text-sm font-bold shadow-lg shadow-red-600/40 transition transform hover:scale-105">
+                    <i class="fa-solid fa-gift mr-1"></i> RSVP
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Header Section -->
+    <header class="relative pt-12 pb-20 px-4 overflow-hidden">
+        <div class="absolute inset-0 bg-cover bg-center opacity-25 z-0" style="background-image: url('https://placehold.co/1920x1080/0f172a/ffffff?text=Festive+Elijosh+Resort');"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-deepNight/90 via-poolBlue/70 to-deepNight z-0"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <!-- Organizer Pill -->
+            <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 mb-6 shadow-xl animate-float">
+                <span class="w-2.5 h-2.5 rounded-full bg-green-400 animate-ping"></span>
+                <span class="text-xs md:text-sm font-semibold uppercase tracking-widest text-amber-300">CEREHE Engineering Works Annual Holiday Celebration</span>
+            </div>
+
+            <!-- Main Titles -->
+            <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-widest text-amber-400 mb-2 drop-shadow-md">
+                Magical Holiday Gathering
+            </h2>
+            <h1 class="text-5xl sm:text-7xl md:text-8xl font-extrabold font-festive text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-amber-300 to-green-400 drop-shadow-[0_5px_15px_rgba(212,36,38,0.5)] mb-4">
+                Cosplay Christmas Party
+            </h1>
+
+            <p class="text-base sm:text-xl text-slate-200 max-w-2xl mx-auto mb-8 font-light">
+                Gear up in your favorite holiday character costume! Join us for an enchanting evening filled with joy, festive food, and exciting surprises.
+            </p>
+
+            <!-- Quick Event Details Badges -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto mb-10">
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-l-red-500 flex items-center space-x-3 text-left">
+                    <div class="bg-red-500/20 p-3 rounded-xl text-red-400 text-xl">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase font-semibold">Date</div>
+                        <div class="text-sm font-bold text-white">December 19, 2026</div>
+                        <div class="text-xs text-amber-300 font-medium">Saturday • 3:00 PM</div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-l-amber-400 flex items-center space-x-3 text-left">
+                    <div class="bg-amber-400/20 p-3 rounded-xl text-amber-400 text-xl">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase font-semibold">Venue</div>
+                        <div class="text-sm font-bold text-white">Elijosh Resort</div>
+                        <div class="text-xs text-amber-300 font-medium">& Events Place</div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-l-green-500 flex items-center space-x-3 text-left">
+                    <div class="bg-green-500/20 p-3 rounded-xl text-green-400 text-xl">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase font-semibold">Contest</div>
+                        <div class="text-sm font-bold text-white">Best Cosplay Prize</div>
+                        <div class="text-xs text-green-300 font-medium">Special Holiday Awards</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#rsvp" class="bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-bold px-8 py-3.5 rounded-2xl shadow-xl shadow-red-900/50 transition transform hover:-translate-y-1 flex items-center space-x-3 text-base">
+                    <i class="fa-solid fa-ticket"></i>
+                    <span>Confirm Attendance (RSVP)</span>
+                </a>
+                <button onclick="openPrintedModal()" class="glass-card hover:bg-slate-800/80 text-amber-300 font-semibold px-6 py-3.5 rounded-2xl border border-amber-400/30 transition flex items-center space-x-2">
+                    <i class="fa-solid fa-image"></i>
+                    <span>View Printed Invitation</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Countdown Timer Section -->
+    <section class="py-12 px-4 bg-slate-900/70 border-y border-white/10 relative">
+        <div class="max-w-4xl mx-auto text-center">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">Counting Down To The Magic</h3>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-8">The Party Begins In:</h2>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
+                <div class="glass-card p-6 rounded-2xl border-t-2 border-t-red-500 shadow-xl">
+                    <div id="days" class="text-4xl md:text-5xl font-black text-red-400 font-fun">00</div>
+                    <div class="text-xs uppercase tracking-wider text-slate-400 mt-2 font-semibold">Days</div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl border-t-2 border-t-amber-400 shadow-xl">
+                    <div id="hours" class="text-4xl md:text-5xl font-black text-amber-400 font-fun">00</div>
+                    <div class="text-xs uppercase tracking-wider text-slate-400 mt-2 font-semibold">Hours</div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl border-t-2 border-t-green-400 shadow-xl">
+                    <div id="minutes" class="text-4xl md:text-5xl font-black text-green-400 font-fun">00</div>
+                    <div class="text-xs uppercase tracking-wider text-slate-400 mt-2 font-semibold">Minutes</div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl border-t-2 border-t-blue-400 shadow-xl">
+                    <div id="seconds" class="text-4xl md:text-5xl font-black text-blue-400 font-fun">00</div>
+                    <div class="text-xs uppercase tracking-wider text-slate-400 mt-2 font-semibold">Seconds</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Costume Reminder Section (Cleaned up: No Santa Hat mention) -->
+    <section class="py-16 px-4 max-w-5xl mx-auto text-center">
+        <div class="glass-card p-8 md:p-12 rounded-3xl border border-amber-400/30 shadow-2xl relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-red-600/20 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-green-600/20 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div class="inline-block bg-amber-400/10 text-amber-300 text-xs font-bold px-3 py-1 rounded-full uppercase mb-3 border border-amber-400/20">
+                🌟 Costume Notice 🌟
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Cosplay As Your Favorite Character And Win A Special Prize!</h2>
+            <p class="text-slate-300 max-w-2xl mx-auto text-base">
+                Dress up as your favorite hero, anime icon, or legendary character. Compete in our holiday contest for wonderful prizes!
+            </p>
+        </div>
+    </section>
+
+    <!-- Venue Slideshow Section (Supports up to 5 venue photos) -->
+    <section class="py-16 px-4 max-w-5xl mx-auto">
+        <div class="text-center mb-10 flex flex-col items-center">
+            <div class="inline-block bg-green-500/10 text-green-400 text-xs font-bold px-3 py-1 rounded-full uppercase mb-2 border border-green-500/20">
+                Venue Spotlight
+            </div>
+            <h2 class="text-3xl font-extrabold text-white">Elijosh Resort & Events Place</h2>
+            <p class="text-slate-300 text-sm mt-1">Explore our breathtaking holiday party destination</p>
+            
+            <!-- Upload Venue Photos Button -->
+            <button onclick="triggerVenueUpload()" class="mt-4 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-400/40 text-xs font-bold px-4 py-2 rounded-xl transition flex items-center space-x-2 shadow">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Upload Venue Photos (Up to 5)</span>
             </button>
-            <h3 class="text-goldAccent font-bold text-lg mb-3 text-center"><i class="fa-solid fa-image mr-2"></i>Printed Invitation Card</h3>
-            <div class="rounded-xl overflow-hidden max-h-[75vh] flex items-center justify-center bg-slate-950 border border-slate-800">
-                <img id="modal-poster-img" src="Cosplay Christmas (4).jpg" alt="Printed Invitation Card" class="max-w-full max-h-[70vh] object-contain">
+            <input type="file" id="venueFileInput" accept="image/*" multiple class="hidden" onchange="handleVenueUpload(event)">
+        </div>
+
+        <!-- Slideshow Container -->
+        <div class="glass-card rounded-3xl overflow-hidden shadow-2xl border border-white/15 relative">
+            <div class="relative h-80 sm:h-96 w-full bg-slate-900 overflow-hidden" id="venueSlidesWrapper">
+                <!-- Slides will be dynamically injected here -->
+            </div>
+
+            <!-- Navigation Arrows -->
+            <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur transition shadow-lg z-20">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur transition shadow-lg z-20">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+            <!-- Dot Indicators & Google Maps -->
+            <div class="p-4 bg-slate-900/90 flex flex-wrap justify-between items-center">
+                <div id="slideDotsContainer" class="flex items-center space-x-2">
+                    <!-- Dots injected dynamically -->
+                </div>
+                <span class="text-xs text-slate-400"><a href="https://maps.google.com/?q=Elijosh+Resort+and+Events+Place" target="_blank" class="text-amber-300 underline font-medium">Open in Google Maps</a></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- RSVP Section (Simplified: Name, Number/Phone, Will you attend) -->
+    <section id="rsvp" class="py-16 px-4 bg-gradient-to-b from-deepNight via-slate-900 to-deepNight relative">
+        <div class="max-w-3xl mx-auto">
+            <div class="glass-card p-8 md:p-12 rounded-3xl shadow-2xl border border-red-500/30 relative overflow-hidden">
+                <div class="absolute -top-12 -right-12 w-40 h-40 bg-red-600/20 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="absolute -bottom-12 -left-12 w-40 h-40 bg-green-600/20 rounded-full blur-2xl pointer-events-none"></div>
+
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center space-x-2 text-red-400 text-xs font-bold uppercase tracking-widest bg-red-500/10 px-3 py-1 rounded-full mb-3 border border-red-500/25">
+                        <i class="fa-solid fa-envelope-open-text"></i>
+                        <span>Secure Your Spot</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-2">RSVP For The Party</h2>
+                    <p class="text-slate-300 text-sm">Please let us know if you'll be joining us on December 19, 2026!</p>
+                </div>
+
+                <!-- RSVP Form -->
+                <form id="rsvpForm" onsubmit="handleRSVP(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Your Name *</label>
+                            <input type="text" id="guestName" required placeholder="e.g. Engr. Juan Dela Cruz" class="w-full bg-slate-800/80 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Contact Number *</label>
+                            <input type="tel" id="guestPhone" required placeholder="09123456789" class="w-full bg-slate-800/80 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition text-sm">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Will You Attend? *</label>
+                        <select id="guestAttendance" class="w-full bg-slate-800/80 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition text-sm">
+                            <option value="Yes, I will be there! 🎉">Yes, I will be there! 🎉</option>
+                            <option value="Regretfully, cannot make it 😢">Regretfully, cannot make it 😢</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-bold py-4 rounded-xl shadow-xl shadow-red-900/40 transition transform active:scale-95 text-base flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Submit RSVP</span>
+                    </button>
+                </form>
+
+                <!-- Success Alert Box (hidden by default) -->
+                <div id="rsvpSuccess" class="hidden mt-6 bg-green-500/20 border border-green-500/50 p-6 rounded-2xl text-center animate-fadeIn">
+                    <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-3 text-xl shadow-lg">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-white mb-1">RSVP Recorded Successfully!</h3>
+                    <p class="text-xs text-green-200 mb-4">See you at Elijosh Resort on December 19, 2026!</p>
+                    <button onclick="resetRSVPForm()" class="bg-slate-800 text-amber-300 text-xs font-semibold px-4 py-2 rounded-lg border border-amber-400/30 hover:bg-slate-700">Submit Another RSVP</button>
+                </div>
+
+                <!-- Live Guest Counter & List Preview -->
+                <div class="mt-12 pt-8 border-t border-white/10">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-sm font-bold uppercase tracking-wider text-amber-300 flex items-center space-x-2">
+                            <i class="fa-solid fa-users"></i>
+                            <span>Confirmed Guests (<span id="totalGuestCount">4</span>)</span>
+                        </h4>
+                        <span class="text-xs text-slate-400">Live Guestbook</span>
+                    </div>
+                    <div id="guestListContainer" class="space-y-2 max-h-48 overflow-y-auto pr-2">
+                        <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs">
+                            <div>
+                                <span class="font-bold text-white">Engr. Alex Santos</span>
+                                <span class="text-slate-400 block">Contact: 09171234567</span>
+                            </div>
+                            <span class="bg-green-500/20 text-green-300 px-2.5 py-1 rounded-md font-medium">Attending 🎉</span>
+                        </div>
+                        <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs">
+                            <div>
+                                <span class="font-bold text-white">Maria Reyes</span>
+                                <span class="text-slate-400 block">Contact: 09189876543</span>
+                            </div>
+                            <span class="bg-green-500/20 text-green-300 px-2.5 py-1 rounded-md font-medium">Attending 🎉</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vercel Deployment Guide Section -->
+    <section class="py-12 px-4 max-w-4xl mx-auto">
+        <div class="bg-slate-900/80 border border-amber-400/30 rounded-2xl p-6 md:p-8 shadow-xl">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="bg-amber-400/20 p-3 rounded-xl text-amber-400 text-xl">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-white">Host This App on Vercel for FREE</h3>
+                    <p class="text-xs text-slate-300">Deploy this exact invitation website in under 2 minutes!</p>
+                </div>
+            </div>
+            
+            <ol class="list-decimal list-inside space-y-2 text-xs md:text-sm text-slate-300 mb-6 bg-slate-800/60 p-4 rounded-xl border border-white/5">
+                <li>Save this single file as <code class="text-amber-300 font-mono">index.html</code> on your computer.</li>
+                <li>Create a free repository on <strong class="text-white">GitHub</strong> and upload <code class="text-amber-300 font-mono">index.html</code>.</li>
+                <li>Go to <a href="https://vercel.com" target="_blank" class="text-amber-400 underline font-medium">Vercel.com</a>, log in with GitHub, and click <strong class="text-white">New Project</strong>.</li>
+                <li>Import your repository and click <strong class="text-white">Deploy</strong> without changing any settings!</li>
+                <li>Share your custom Vercel link with all CEREHE Engineering Works colleagues! 🎉</li>
+            </ol>
+
+            <div class="flex flex-wrap gap-3">
+                <button onclick="downloadCode()" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs flex items-center space-x-2 transition shadow">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Download index.html</span>
+                </button>
+                <button onclick="shareApp()" class="bg-slate-800 hover:bg-slate-700 text-amber-300 font-semibold px-4 py-2.5 rounded-xl text-xs border border-amber-400/30 flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <span>Copy Invitation Link</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 px-4 text-center border-t border-white/10 text-xs text-slate-400 bg-deepNight">
+        <div class="max-w-7xl mx-auto space-y-3">
+            <div class="font-bold text-sm text-white tracking-wider">CEREHE ENGINEERING WORKS</div>
+            <p>© 2026 Cosplay Christmas Party. All rights reserved. Designed for the ultimate festive holiday celebration.</p>
+        </div>
+    </footer>
+
+    <!-- Printed Invitation Card Modal (View and Download) -->
+    <div id="printedCardModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-amber-400/40 rounded-3xl max-w-2xl w-full p-6 relative shadow-2xl animate-fadeIn">
+            <button onclick="closePrintedModal()" class="absolute top-4 right-4 bg-slate-800 hover:bg-red-600 text-white w-9 h-9 rounded-full flex items-center justify-center transition shadow">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="text-center mb-4">
+                <span class="text-xs uppercase font-bold tracking-widest text-amber-400">Official Poster</span>
+                <h3 class="text-2xl font-extrabold text-white">Printed Invitation Card</h3>
+            </div>
+
+            <!-- Upload Custom Printed Card -->
+            <div class="mb-4 text-center">
+                <button onclick="document.getElementById('printedCardInput').click()" class="bg-slate-800 text-amber-300 hover:bg-slate-700 border border-amber-400/30 text-xs font-semibold px-4 py-2 rounded-xl transition">
+                    <i class="fa-solid fa-upload mr-1"></i> Upload Printed Invitation Image
+                </button>
+                <input type="file" id="printedCardInput" accept="image/*" class="hidden" onchange="handlePrintedCardUpload(event)">
+            </div>
+
+            <!-- Image preview -->
+            <div class="rounded-2xl overflow-hidden border-2 border-amber-400/50 bg-slate-800 max-h-[60vh] flex items-center justify-center">
+                <img id="printedCardImg" src="https://placehold.co/800x1100/165b33/ffffff?text=CEREHE+Cosplay+Christmas+Party+Card" alt="Printed Card" class="w-full h-auto object-contain max-h-[55vh]">
+            </div>
+
+            <div class="mt-6 flex justify-center space-x-3">
+                <a id="downloadCardBtn" href="#" download="CEREHE-Invitation-Card.jpg" class="hidden bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs flex items-center space-x-2">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Download Card</span>
+                </a>
+                <button onclick="closePrintedModal()" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-xs">
+                    Close Preview
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- JavaScript Logic -->
     <script>
-        // 1. Snowflakes Generator
-        const snowContainer = document.getElementById('snow-container');
-        for (let i = 0; i < 40; i++) {
-            const flake = document.createElement('div');
-            flake.classList.add('snowflake');
-            flake.style.width = Math.random() * 6 + 2 + 'px';
-            flake.style.height = flake.style.width;
-            flake.style.left = Math.random() * 100 + 'vw';
-            flake.style.animationDuration = Math.random() * 5 + 5 + 's';
-            flake.style.animationDelay = Math.random() * 5 + 's';
-            snowContainer.appendChild(flake);
-        }
-
-        // 2. Envelope Opening Logic
+        // 1. Envelope Opening Animation
         function openEnvelope() {
-            const envelope = document.getElementById('envelope');
-            const introScreen = document.getElementById('intro-screen');
-            const mainContent = document.getElementById('main-content');
-
-            envelope.classList.add('open');
+            const box = document.getElementById('envelopeBox');
+            box.classList.add('envelope-open');
+            
             setTimeout(() => {
-                introScreen.classList.add('opacity-0');
+                const overlay = document.getElementById('envelopeOverlay');
+                overlay.style.opacity = '0';
                 setTimeout(() => {
-                    introScreen.style.display = 'none';
-                    mainContent.classList.remove('opacity-0', 'pointer-events-none');
-                }, 700);
-            }, 600);
+                    overlay.remove();
+                }, 800);
+            }, 1000);
         }
 
-        // 3. Customizer Drawer Toggle
-        function toggleCustomizer() {
-            const drawer = document.getElementById('customizer-drawer');
-            drawer.classList.toggle('translate-x-full');
+        // 2. Snowfall Animation on Canvas
+        const canvas = document.getElementById('snowCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-        // 4. File Upload Handlers
-        function handleLogoUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const url = URL.createObjectURL(file);
-                document.getElementById('company-logo').src = url;
-            }
-        }
+        const snowflakes = [];
+        const numSnowflakes = 85;
 
-        function handlePosterUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const url = URL.createObjectURL(file);
-                document.getElementById('modal-poster-img').src = url;
-            }
-        }
-
-        let venueSlides = [
-            'ChatGPT Image Sep 28, 2026, 12_53_49 PM.png',
-            'Cosplay Christmas (4)_2.jpg',
-            'Cosplay Christmas (1).jpg',
-            'Cosplay Christmas (2).jpg',
-            'Cosplay Christmas (3).jpg'
-        ];
-        let currentSlide = 0;
-
-        function handleSlideUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const url = URL.createObjectURL(file);
-                venueSlides.push(url);
-                currentSlide = venueSlides.length - 1;
-                renderSlideshow();
-            }
-        }
-
-        // 5. Venue Slideshow Logic
-        const slideshowContainer = document.getElementById('slideshow-container');
-        const slideDots = document.getElementById('slide-dots');
-
-        function renderSlideshow() {
-            slideshowContainer.innerHTML = '';
-            slideDots.innerHTML = '';
-
-            venueSlides.forEach((slide, index) => {
-                const img = document.createElement('img');
-                img.src = slide;
-                img.className = `absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`;
-                slideshowContainer.appendChild(img);
-
-                const dot = document.createElement('button');
-                dot.className = `w-2.5 h-2.5 rounded-full transition-all ${index === currentSlide ? 'bg-goldAccent w-6' : 'bg-white/50'}`;
-                dot.onclick = () => { currentSlide = index; renderSlideshow(); };
-                slideDots.appendChild(dot);
+        for (let i = 0; i < numSnowflakes; i++) {
+            snowflakes.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 3 + 1,
+                speed: Math.random() * 1.2 + 0.4,
+                wind: Math.random() * 0.8 - 0.4,
+                opacity: Math.random() * 0.8 + 0.2
             });
         }
 
-        renderSlideshow();
-        setInterval(() => {
-            currentSlide = (currentSlide + 1) % venueSlides.length;
-            renderSlideshow();
-        }, 4000);
+        function drawSnow() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let flake of snowflakes) {
+                ctx.fillStyle = `rgba(255, 255, 255, ${flake.opacity})`;
+                ctx.beginPath();
+                ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
+                ctx.fill();
 
-        // 6. Modal Functions
-        function openModal() {
-            document.getElementById('invite-modal').classList.remove('opacity-0', 'pointer-events-none');
-        }
-        function closeModal() {
-            document.getElementById('invite-modal').classList.add('opacity-0', 'pointer-events-none');
-        }
+                flake.y += flake.speed;
+                flake.x += flake.wind;
 
-        // 7. Countdown Timer
-        const partyDate = new Date('December 19, 2026 15:00:00').getTime();
-        setInterval(() => {
-            const now = new Date().getTime();
-            const distance = partyDate - now;
-
-            if (distance > 0) {
-                document.getElementById('days').innerText = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');
-                document.getElementById('hours').innerText = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-                document.getElementById('mins').innerText = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-                document.getElementById('secs').innerText = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
+                if (flake.y > canvas.height) {
+                    flake.y = 0;
+                    flake.x = Math.random() * canvas.width;
+                }
+                if (flake.x > canvas.width) {
+                    flake.x = 0;
+                } else if (flake.x < 0) {
+                    flake.x = canvas.width;
+                }
             }
-        }, 1000);
+            requestAnimationFrame(drawSnow);
+        }
+        drawSnow();
 
-        // 8. RSVP Handler
+        // 3. Countdown Timer Logic to December 19, 2026 15:00:00
+        const eventDate = new Date('December 19, 2026 15:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            if (distance < 0) {
+                document.getElementById('days').innerText = '00';
+                document.getElementById('hours').innerText = '00';
+                document.getElementById('minutes').innerText = '00';
+                document.getElementById('seconds').innerText = '00';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = String(days).padStart(2, '0');
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // 4. Venue Slideshow Logic (Supports up to 5 photos)
+        let venueSlides = [
+            { url: "https://placehold.co/1200x800/1c2541/ffffff?text=Elijosh+Resort+Poolside+Night+View", title: "Poolside Holiday Illumination" },
+            { url: "https://placehold.co/1200x800/0f172a/ffffff?text=Resort+Grounds+and+Christmas+Lights", title: "Festive Grounds & Decorations" },
+            { url: "https://placehold.co/1200x800/165b33/ffffff?text=Main+Function+Hall+Setup", title: "Main Function Hall & Dining Area" },
+            { url: "https://placehold.co/1200x800/7f1d1d/ffffff?text=Resort+Entrance+at+Sunset", title: "Resort Entrance & Parking" },
+            { url: "https://placehold.co/1200x800/ffb703/07101f?text=Special+Party+Area+Setup", title: "Special Celebration Setup" }
+        ];
+        let currentSlideIndex = 0;
+
+        function renderVenueSlideshow() {
+            const wrapper = document.getElementById('venueSlidesWrapper');
+            const dotsContainer = document.getElementById('slideDotsContainer');
+
+            wrapper.innerHTML = venueSlides.map((slide, i) => `
+                <div class="venue-slide absolute inset-0 transition-opacity duration-700 ${i === currentSlideIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'} flex items-center justify-center">
+                    <img src="${slide.url}" alt="Venue photo ${i+1}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
+                        <div>
+                            <span class="bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Slide ${i + 1} of ${venueSlides.length}</span>
+                            <h4 class="text-white font-bold text-xl mt-1">${slide.title}</h4>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            dotsContainer.innerHTML = venueSlides.map((_, i) => `
+                <button onclick="currentSlide(${i})" class="w-3 h-3 rounded-full transition ${i === currentSlideIndex ? 'bg-amber-400 scale-125' : 'bg-slate-600'}"></button>
+            `).join('');
+        }
+
+        function showSlide(index) {
+            currentSlideIndex = index;
+            renderVenueSlideshow();
+        }
+
+        function nextSlide() {
+            currentSlideIndex = (currentSlideIndex + 1) % venueSlides.length;
+            renderVenueSlideshow();
+        }
+
+        function prevSlide() {
+            currentSlideIndex = (currentSlideIndex - 1 + venueSlides.length) % venueSlides.length;
+            renderVenueSlideshow();
+        }
+
+        function currentSlide(index) {
+            currentSlideIndex = index;
+            renderVenueSlideshow();
+        }
+
+        renderVenueSlideshow();
+        setInterval(nextSlide, 5000);
+
+        // Handler to upload up to 5 venue photos
+        function triggerVenueUpload() {
+            document.getElementById('venueFileInput').click();
+        }
+
+        function handleVenueUpload(event) {
+            const files = event.target.files;
+            if (files && files.length > 0) {
+                venueSlides = []; // Reset or append
+                const limit = Math.min(files.length, 5);
+                for (let i = 0; i < limit; i++) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        venueSlides.push({ url: e.target.result, title: `Uploaded Venue Photo ${i + 1}` });
+                        if (venueSlides.length === limit) {
+                            currentSlideIndex = 0;
+                            renderVenueSlideshow();
+                        }
+                    }
+                    reader.readAsDataURL(files[i]);
+                }
+            }
+        }
+
+        // 5. Company Logo Upload
+        function triggerLogoUpload() {
+            document.getElementById('logoFileInput').click();
+        }
+
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('companyLogoImg');
+                    const text = document.getElementById('companyLogoText');
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                    text.classList.add('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 6. Printed Card Modal & Upload
+        function openPrintedModal() {
+            document.getElementById('printedCardModal').classList.remove('hidden');
+        }
+
+        function closePrintedModal() {
+            document.getElementById('printedCardModal').classList.add('hidden');
+        }
+
+        function handlePrintedCardUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('printedCardImg');
+                    const downloadBtn = document.getElementById('downloadCardBtn');
+                    img.src = e.target.result;
+                    downloadBtn.href = e.target.result;
+                    downloadBtn.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 7. Audio Toggle
+        let isPlaying = false;
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggleBtn = document.getElementById('musicToggleBtn');
+        const musicIcon = document.getElementById('musicIcon');
+        const musicText = document.getElementById('musicText');
+
+        function toggleMusic() {
+            if (isPlaying) {
+                bgMusic.pause();
+                isPlaying = false;
+                musicIcon.className = 'fa-solid fa-volume-xmark';
+                musicText.innerText = 'Music: OFF';
+                musicToggleBtn.classList.remove('border-green-400', 'text-green-300');
+            } else {
+                bgMusic.play().then(() => {
+                    isPlaying = true;
+                    musicIcon.className = 'fa-solid fa-volume-high';
+                    musicText.innerText = 'Music: ON';
+                    musicToggleBtn.classList.add('border-green-400', 'text-green-300');
+                }).catch(e => {
+                    console.log('Audio autoplay blocked or unavailable', e);
+                });
+            }
+        }
+
+        // 8. Simplified RSVP Form Handler & Guestlist State
+        let guests = [
+            { name: "Engr. Alex Santos", phone: "09171234567", status: "Attending 🎉" },
+            { name: "Maria Reyes", phone: "09189876543", status: "Attending 🎉" }
+        ];
+
+        function renderGuests() {
+            const container = document.getElementById('guestListContainer');
+            document.getElementById('totalGuestCount').innerText = guests.length;
+            container.innerHTML = guests.map(g => `
+                <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs animate-fadeIn">
+                    <div>
+                        <span class="font-bold text-white">${escapeHtml(g.name)}</span>
+                        <span class="text-slate-400 block">Contact: ${escapeHtml(g.phone)}</span>
+                    </div>
+                    <span class="bg-green-500/20 text-green-300 px-2.5 py-1 rounded-md font-medium">${escapeHtml(g.status)}</span>
+                </div>
+            `).join('');
+        }
+
         function handleRSVP(event) {
             event.preventDefault();
-            document.getElementById('rsvp-form').style.display = 'none';
-            document.getElementById('rsvp-success').classList.remove('hidden');
+            const name = document.getElementById('guestName').value;
+            const phone = document.getElementById('guestPhone').value;
+            const attendance = document.getElementById('guestAttendance').value;
+
+            guests.unshift({
+                name: name,
+                phone: phone,
+                status: attendance
+            });
+
+            renderGuests();
+
+            document.getElementById('rsvpForm').classList.add('hidden');
+            document.getElementById('rsvpSuccess').classList.remove('hidden');
+        }
+
+        function resetRSVPForm() {
+            document.getElementById('rsvpForm').reset();
+            document.getElementById('rsvpForm').classList.remove('hidden');
+            document.getElementById('rsvpSuccess').classList.add('hidden');
+        }
+
+        function escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // 9. Download and Share helpers
+        function downloadCode() {
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function shareApp() {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alertBox("Invitation link copied to clipboard! Ready to share on Vercel.");
+                });
+            } else {
+                alertBox("URL: " + window.location.href);
+            }
+        }
+
+        function alertBox(msg) {
+            const div = document.createElement('div');
+            div.className = 'fixed bottom-5 right-5 z-50 bg-slate-900 border border-amber-400 text-white px-6 py-3 rounded-xl shadow-2xl text-xs font-semibold animate-bounce';
+            div.innerHTML = `<i class="fa-solid fa-bell text-amber-400 mr-2"></i> ${msg}`;
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 4000);
         }
     </script>
 </body>
