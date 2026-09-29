@@ -1084,6 +1084,8 @@
 
                 if (response.ok && data.adminAuthorized) {
                     adminPassword = pass;
+                    guests = Array.isArray(data.guests) ? data.guests : guests;
+                    renderGuests();
                     document.getElementById('guestPassStep').classList.add('hidden');
                     document.getElementById('guestEditControls').classList.remove('hidden');
                     renderGuestEditList();
