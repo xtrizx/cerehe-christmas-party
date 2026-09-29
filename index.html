@@ -93,6 +93,14 @@
             border: 1px solid rgba(255, 255, 255, 0.18);
         }
 
+        #venueGallery img {
+            display: block;
+        }
+
+        #venueLightbox {
+            touch-action: manipulation;
+        }
+
         /* Envelope intro styles */
         #envelopeOverlay {
             transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
@@ -112,6 +120,7 @@
     </style>
 </head>
 <body class="bg-deepNight text-slate-100 font-sans selection:bg-red-600 selection:text-white min-h-screen relative overflow-x-hidden">
+    <script>if ("scrollRestoration" in history) history.scrollRestoration = "manual"; window.scrollTo(0, 0);</script>
 
     <!-- Envelope Intro Overlay -->
     <div id="envelopeOverlay" class="fixed inset-0 z-50 bg-gradient-to-br from-deepNight via-slate-900 to-red-950 flex flex-col items-center justify-center p-4">
@@ -176,11 +185,10 @@
         <span class="lightbulb light-green"></span>
         <span class="lightbulb light-blue"></span>
     </div>
-
-    <!-- Background Music Audio -->
-    <audio id="bgMusic" loop>
-        <source src="https://actions.google.com/sounds/v1/holidays/christmas_bells.ogg" type="audio/ogg">
-    </audio>
+    <!-- Background Music: YouTube -->
+    <div id="youtubeMusic" class="fixed -left-[9999px] top-0 w-px h-px overflow-hidden" aria-hidden="true">
+        <div id="youtubePlayer"></div>
+    </div>
 
     <!-- Navigation Bar -->
     <nav class="sticky top-0 z-40 glass-card border-b border-white/10 px-4 py-3">
@@ -203,13 +211,13 @@
     </nav>
 
     <!-- Hero Header Section -->
-    <header class="relative pt-12 pb-20 px-4 overflow-hidden">
+    <header id="magicalHoliday" class="relative pt-12 pb-20 px-4 overflow-hidden scroll-mt-24">
         <div class="absolute inset-0 bg-gradient-to-b from-deepNight/90 via-poolBlue/70 to-deepNight z-0"></div>
 
         <div class="max-w-5xl mx-auto text-center relative z-10">
             <!-- CEREHE Logo -->
             <div class="flex justify-center mb-6 animate-float">
-                <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/CEREHE-Engineering-Works-Logo-2.png" alt="CEREHE Engineering Works Logo" class="h-[38px] sm:h-[40px] max-w-[180px] object-contain">
+                <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/CEREHE-Engineering-Works-Logo-2.png" alt="CEREHE Engineering Works Logo" class="h-[76px] sm:h-[80px] max-w-[300px] object-contain">
             </div>
 
             <!-- Main Titles -->
@@ -316,9 +324,8 @@
             </p>
         </div>
     </section>
-
-    <!-- Venue Slideshow Section -->
-    <section class="py-16 px-4 max-w-4xl mx-auto">
+    <!-- Venue Spotlight: Single-Image Slider -->
+    <section id="venue" class="py-16 px-4 max-w-4xl mx-auto">
         <div class="text-center mb-10">
             <div class="inline-block bg-green-500/10 text-green-400 text-xs font-bold px-3 py-1 rounded-full uppercase mb-2 border border-green-500/20">
                 Venue Spotlight
@@ -327,79 +334,60 @@
             <p class="text-slate-300 text-sm mt-1">Explore our breathtaking holiday party destination</p>
         </div>
 
-        <!-- Slideshow Container -->
         <div class="glass-card rounded-3xl overflow-hidden shadow-2xl border border-white/15 relative">
             <div class="relative aspect-[4/3] w-full bg-slate-900 overflow-hidden">
-                <!-- Slide 1 -->
-                <div class="venue-slide absolute inset-0 transition-opacity duration-700 opacity-100 flex items-center justify-center">
-                    <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/Elijosh-Resort-5.png" alt="Elijosh Resort View 1" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
-                        <div>
-                            <span class="bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Slide 1 of 5</span>
-                            <h4 class="text-white font-bold text-xl mt-1">Elijosh Resort</h4>
-                        </div>
-                    </div>
-                </div>
-                <!-- Slide 2 -->
-                <div class="venue-slide absolute inset-0 transition-opacity duration-700 opacity-0 flex items-center justify-center">
-                    <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/Elijosh-Resort-4.png" alt="Elijosh Resort View 2" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
-                        <div>
-                            <span class="bg-amber-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Slide 2 of 5</span>
-                            <h4 class="text-white font-bold text-xl mt-1">Elijosh Resort</h4>
-                        </div>
-                    </div>
-                </div>
-                <!-- Slide 3 -->
-                <div class="venue-slide absolute inset-0 transition-opacity duration-700 opacity-0 flex items-center justify-center">
-                    <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/Elijosh-Resort-3.png" alt="Elijosh Resort View 3" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
-                        <div>
-                            <span class="bg-green-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Slide 3 of 5</span>
-                            <h4 class="text-white font-bold text-xl mt-1">Elijosh Resort</h4>
-                        </div>
-                    </div>
-                </div>
-                <!-- Slide 4 -->
-                <div class="venue-slide absolute inset-0 transition-opacity duration-700 opacity-0 flex items-center justify-center">
-                    <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/Elijosh-Resort-2.png" alt="Elijosh Resort View 4" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
-                        <div>
-                            <span class="bg-blue-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Slide 4 of 5</span>
-                            <h4 class="text-white font-bold text-xl mt-1">Elijosh Resort</h4>
-                        </div>
-                    </div>
-                </div>
-                <!-- Slide 5 -->
-                <div class="venue-slide absolute inset-0 transition-opacity duration-700 opacity-0 flex items-center justify-center">
-                    <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/Elijosh-Resort-1.png" alt="Elijosh Resort View 5" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
-                        <div>
-                            <span class="bg-purple-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Slide 5 of 5</span>
-                            <h4 class="text-white font-bold text-xl mt-1">Elijosh Resort</h4>
-                        </div>
-                    </div>
-                </div>
-                <!-- Navigation Arrows -->
-                <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur transition shadow-lg">
+                <button type="button" onclick="prevVenueImage()" class="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 z-10 bg-black/55 hover:bg-black/80 text-white w-11 h-11 rounded-full flex items-center justify-center backdrop-blur transition shadow-lg" aria-label="Previous venue photo">
                     <i class="fa-solid fa-chevron-left"></i>
                 </button>
-                <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur transition shadow-lg">
+
+                <button type="button" onclick="openVenueLightbox(currentVenueImage)" class="absolute inset-0 w-full h-full cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-inset focus:ring-amber-400" aria-label="Open current venue photo">
+                    <img id="venueMainImage" src="" alt="Elijosh Resort View" class="w-full h-full object-cover transition duration-500">
+                    <span class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent pointer-events-none"></span>
+                    <span class="absolute bottom-4 left-4 bg-black/60 backdrop-blur-sm text-white text-xs md:text-sm font-semibold px-3 py-1.5 rounded-md pointer-events-none">
+                        Photo <span id="venueImageNumber">1</span> of <span id="venueImageTotal">13</span>
+                    </span>
+                    <span class="absolute top-4 right-4 bg-black/60 backdrop-blur-sm text-white w-9 h-9 rounded-full flex items-center justify-center pointer-events-none">
+                        <i class="fa-solid fa-expand"></i>
+                    </span>
+                </button>
+
+                <button type="button" onclick="nextVenueImage()" class="absolute right-3 md:right-5 top-1/2 -translate-y-1/2 z-10 bg-black/55 hover:bg-black/80 text-white w-11 h-11 rounded-full flex items-center justify-center backdrop-blur transition shadow-lg" aria-label="Next venue photo">
                     <i class="fa-solid fa-chevron-right"></i>
                 </button>
             </div>
 
-            <!-- Dot Indicators -->
-            <div class="p-4 bg-slate-900/90 flex justify-center items-center space-x-3">
-                <button onclick="currentSlide(0)" class="slide-dot w-3 h-3 rounded-full bg-amber-400 transition"></button>
-                <button onclick="currentSlide(1)" class="slide-dot w-3 h-3 rounded-full bg-slate-600 transition"></button>
-                <button onclick="currentSlide(2)" class="slide-dot w-3 h-3 rounded-full bg-slate-600 transition"></button>
-                <button onclick="currentSlide(3)" class="slide-dot w-3 h-3 rounded-full bg-slate-600 transition"></button>
-                <button onclick="currentSlide(4)" class="slide-dot w-3 h-3 rounded-full bg-slate-600 transition"></button>
-                <span class="text-xs text-slate-400 ml-4"><a href="https://maps.google.com/?q=Elijosh+Resort+and+Events+Place" target="_blank" class="text-amber-300 underline font-medium">Open in Google Maps</a></span>
+            <div class="p-4 bg-slate-900/90 flex flex-wrap justify-center items-center gap-3">
+                <button type="button" onclick="prevVenueImage()" class="bg-slate-800 hover:bg-slate-700 text-white w-9 h-9 rounded-full flex items-center justify-center transition" aria-label="Previous venue photo">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <div id="venueImageDots" class="flex items-center gap-1.5"></div>
+                <button type="button" onclick="nextVenueImage()" class="bg-slate-800 hover:bg-slate-700 text-white w-9 h-9 rounded-full flex items-center justify-center transition" aria-label="Next venue photo">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+                <span id="venueImageLabel" class="text-xs text-slate-400"></span>
+                <a href="https://maps.google.com/?q=Elijosh+Resort+and+Events+Place" target="_blank" rel="noopener noreferrer" class="text-amber-300 underline font-medium text-xs">
+                    Open in Google Maps
+                </a>
             </div>
         </div>
     </section>
+
+    <!-- Venue Lightbox -->
+    <div id="venueLightbox" class="hidden fixed inset-0 z-[70] bg-black/90 backdrop-blur-md p-4 md:p-8 items-center justify-center" role="dialog" aria-modal="true" aria-label="Venue photo viewer">
+        <button type="button" onclick="closeVenueLightbox()" class="absolute top-4 right-4 md:top-6 md:right-6 z-10 bg-slate-800/90 hover:bg-red-600 text-white w-11 h-11 rounded-full flex items-center justify-center shadow-xl" aria-label="Close photo viewer">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <button type="button" onclick="prevLightboxImage()" class="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-10 bg-slate-900/80 hover:bg-slate-700 text-white w-11 h-11 rounded-full flex items-center justify-center shadow-xl" aria-label="Previous photo">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <div class="max-w-6xl max-h-[90vh] w-full h-full flex flex-col items-center justify-center">
+            <img id="lightboxImage" src="" alt="Elijosh Resort enlarged view" class="max-w-full max-h-[82vh] object-contain rounded-xl shadow-2xl border border-white/10">
+            <div id="lightboxCaption" class="mt-3 text-sm text-slate-200 text-center"></div>
+        </div>
+        <button type="button" onclick="nextLightboxImage()" class="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 z-10 bg-slate-900/80 hover:bg-slate-700 text-white w-11 h-11 rounded-full flex items-center justify-center shadow-xl" aria-label="Next photo">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+    </div>
 
     <!-- RSVP Section (Name and Attendance - No guest count or costume question) -->
     <section id="rsvp" class="py-16 px-4 bg-gradient-to-b from-deepNight via-slate-900 to-deepNight relative">
@@ -549,13 +537,23 @@
         // 1. Envelope Opening Animation
         function openEnvelope() {
             const box = document.getElementById('envelopeBox');
+            const overlay = document.getElementById('envelopeOverlay');
+            const hero = document.getElementById('magicalHoliday');
+
+            // The envelope click is a user gesture, so use it to start the YouTube player.
+            startBackgroundMusic();
+
             box.classList.add('envelope-open');
-            
+
             setTimeout(() => {
-                const overlay = document.getElementById('envelopeOverlay');
                 overlay.style.opacity = '0';
                 setTimeout(() => {
                     overlay.remove();
+
+                    // Always show Magical Holiday Gathering / Cosplay Christmas Party first.
+                    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                    if (hero) hero.scrollIntoView({ behavior: 'instant', block: 'start' });
+                    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
                 }, 800);
             }, 1000);
         }
@@ -637,38 +635,104 @@
         }
         setInterval(updateCountdown, 1000);
         updateCountdown();
+        // 4. Venue Spotlight Single-Image Slider + Lightbox
+        const venueImages = [
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/1.png',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/2.png',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/3.png',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/4.png',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/5.png',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/6.jpg',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/7.jpg',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/8.jpg',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/9.jpg',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/10.jpg',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/11.jpg',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/12.jpg',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/13.jpg'
+        ];
 
-        // 4. Venue Slideshow Logic
-        let currentSlideIndex = 0;
-        const slides = document.querySelectorAll('.venue-slide');
-        const dots = document.querySelectorAll('.slide-dot');
+        let currentVenueImage = 0;
+        let lightboxIndex = 0;
 
-        function showSlide(index) {
-            slides.forEach((slide, i) => {
-                slide.style.opacity = i === index ? '1' : '0';
-            });
-            dots.forEach((dot, i) => {
-                dot.className = `slide-dot w-3 h-3 rounded-full transition ${i === index ? 'bg-amber-400 scale-125' : 'bg-slate-600'}`;
-            });
+        function renderVenueImage() {
+            const image = document.getElementById('venueMainImage');
+            image.src = venueImages[currentVenueImage];
+            image.alt = `Elijosh Resort View ${currentVenueImage + 1}`;
+
+            document.getElementById('venueImageNumber').innerText = currentVenueImage + 1;
+            document.getElementById('venueImageTotal').innerText = venueImages.length;
+            document.getElementById('venueImageLabel').innerText =
+                `Photo ${currentVenueImage + 1} of ${venueImages.length}`;
+
+            const dots = document.getElementById('venueImageDots');
+            dots.innerHTML = venueImages.map((_, i) => `
+                <button type="button" onclick="currentVenueImageSlide(${i})"
+                    class="w-2.5 h-2.5 rounded-full transition ${i === currentVenueImage ? 'bg-amber-400 scale-125' : 'bg-slate-600 hover:bg-slate-400'}"
+                    aria-label="Show venue photo ${i + 1}"></button>
+            `).join('');
         }
 
-        function nextSlide() {
-            currentSlideIndex = (currentSlideIndex + 1) % slides.length;
-            showSlide(currentSlideIndex);
+        function currentVenueImageSlide(index) {
+            currentVenueImage = (index + venueImages.length) % venueImages.length;
+            renderVenueImage();
         }
 
-        function prevSlide() {
-            currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
-            showSlide(currentSlideIndex);
+        function nextVenueImage() {
+            currentVenueImage = (currentVenueImage + 1) % venueImages.length;
+            renderVenueImage();
         }
 
-        function currentSlide(index) {
-            currentSlideIndex = index;
-            showSlide(currentSlideIndex);
+        function prevVenueImage() {
+            currentVenueImage = (currentVenueImage - 1 + venueImages.length) % venueImages.length;
+            renderVenueImage();
         }
 
-        // Auto advance slides every 5 seconds
-        setInterval(nextSlide, 5000);
+        function openVenueLightbox(index) {
+            lightboxIndex = index;
+            updateLightboxImage();
+            document.getElementById('venueLightbox').classList.remove('hidden');
+            document.getElementById('venueLightbox').classList.add('flex');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function updateLightboxImage() {
+            document.getElementById('lightboxImage').src = venueImages[lightboxIndex];
+            document.getElementById('lightboxImage').alt = `Elijosh Resort View ${lightboxIndex + 1}`;
+            document.getElementById('lightboxCaption').innerText =
+                `Elijosh Resort • Photo ${lightboxIndex + 1} of ${venueImages.length}`;
+        }
+
+        function closeVenueLightbox() {
+            const lightbox = document.getElementById('venueLightbox');
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        function nextLightboxImage() {
+            lightboxIndex = (lightboxIndex + 1) % venueImages.length;
+            updateLightboxImage();
+        }
+
+        function prevLightboxImage() {
+            lightboxIndex = (lightboxIndex - 1 + venueImages.length) % venueImages.length;
+            updateLightboxImage();
+        }
+
+        document.getElementById('venueLightbox').addEventListener('click', (event) => {
+            if (event.target.id === 'venueLightbox') closeVenueLightbox();
+        });
+
+        document.addEventListener('keydown', (event) => {
+            const lightbox = document.getElementById('venueLightbox');
+            if (lightbox.classList.contains('hidden')) return;
+            if (event.key === 'Escape') closeVenueLightbox();
+            if (event.key === 'ArrowRight') nextLightboxImage();
+            if (event.key === 'ArrowLeft') prevLightboxImage();
+        });
+
+        renderVenueImage();
 
         // 6. Printed Card Modal
         function openPrintedModal() {
@@ -679,31 +743,83 @@
             document.getElementById('printedCardModal').classList.add('hidden');
         }
 
-        // 7. Audio Toggle
+        // 7. YouTube Background Music
+        let youtubePlayer = null;
         let isPlaying = false;
-        const bgMusic = document.getElementById('bgMusic');
+        let youtubeReady = false;
+
         const musicToggleBtn = document.getElementById('musicToggleBtn');
         const musicIcon = document.getElementById('musicIcon');
         const musicText = document.getElementById('musicText');
 
-        function toggleMusic() {
-            if (isPlaying) {
-                bgMusic.pause();
-                isPlaying = false;
-                musicIcon.className = 'fa-solid fa-volume-xmark';
-                musicText.innerText = 'Music: OFF';
-                musicToggleBtn.classList.remove('border-green-400', 'text-green-300');
+        function updateMusicButton(playing) {
+            isPlaying = playing;
+            musicIcon.className = playing ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark';
+            musicText.innerText = playing ? 'Music: ON' : 'Music: OFF';
+            if (playing) {
+                musicToggleBtn.classList.add('border-green-400', 'text-green-300');
             } else {
-                bgMusic.play().then(() => {
-                    isPlaying = true;
-                    musicIcon.className = 'fa-solid fa-volume-high';
-                    musicText.innerText = 'Music: ON';
-                    musicToggleBtn.classList.add('border-green-400', 'text-green-300');
-                }).catch(e => {
-                    console.log('Audio autoplay blocked or unavailable', e);
-                });
+                musicToggleBtn.classList.remove('border-green-400', 'text-green-300');
             }
         }
+
+        function startBackgroundMusic() {
+            if (!youtubeReady || !youtubePlayer) return;
+            try {
+                youtubePlayer.unMute();
+                youtubePlayer.setVolume(45);
+                youtubePlayer.playVideo();
+                updateMusicButton(true);
+            } catch (error) {
+                console.log('YouTube music could not start:', error);
+            }
+        }
+
+        function toggleMusic() {
+            if (!youtubeReady || !youtubePlayer) return;
+            try {
+                if (isPlaying) {
+                    youtubePlayer.pauseVideo();
+                    updateMusicButton(false);
+                } else {
+                    youtubePlayer.unMute();
+                    youtubePlayer.setVolume(45);
+                    youtubePlayer.playVideo();
+                    updateMusicButton(true);
+                }
+            } catch (error) {
+                console.log('YouTube music toggle failed:', error);
+            }
+        }
+
+        function onYouTubeIframeAPIReady() {
+            youtubePlayer = new YT.Player('youtubePlayer', {
+                videoId: 'oo4UtaN9DHY',
+                playerVars: {
+                    autoplay: 0,
+                    controls: 0,
+                    loop: 1,
+                    playlist: 'oo4UtaN9DHY',
+                    playsinline: 1,
+                    rel: 0,
+                    modestbranding: 1
+                },
+                events: {
+                    onReady: function () {
+                        youtubeReady = true;
+                        youtubePlayer.setVolume(45);
+                    },
+                    onStateChange: function (event) {
+                        if (event.data === YT.PlayerState.PLAYING) updateMusicButton(true);
+                        if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) updateMusicButton(false);
+                    }
+                }
+            });
+        }
+
+        const youtubeApiScript = document.createElement('script');
+        youtubeApiScript.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(youtubeApiScript);
 
         // 8. RSVP Form Handler & Guestlist State
         let guests = [
