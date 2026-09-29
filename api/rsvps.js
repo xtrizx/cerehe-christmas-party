@@ -24,8 +24,17 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
+      const adminAuthorized = req.headers['x-admin-password'] === RSVP_ADMIN_PASSWORD;
+      const select = adminAuthorized
+        ? 'id,name,party_size,attendance,message,message_approved,created_at'
+        : 'id,message,message_approved,created_at';
+
+      const filters = adminAuthorized
+        ? '&order=created_at.desc'
+        : '&message_approved=eq.true&message=not.is.null&order=created_at.desc';
+
       const response = await fetch(
-        `${SUPABASE_URL}/rest/v1/rsvps?select=id,name,party_size,attendance,message,message_approved,created_at&attendance=eq.Yes%2C%20absolutely!%20%F0%9F%8E%89&order=created_at.desc`,
+        `${SUPABASE_URL}/rest/v1/rsvps?select=${select}&attendance=eq.Yes%2C%20absolutely!%20%F0%9F%8E%89${filters}`,
         { headers: supabaseHeaders() }
       );
 
@@ -36,8 +45,7 @@ export default async function handler(req, res) {
       }
 
       const guests = await response.json();
-      const adminAuthorized = req.headers['x-admin-password'] === RSVP_ADMIN_PASSWORD;
-      return json(res, 200, adminAuthorized ? { adminAuthorized: true, guests } : guests);
+      return json(res, 200, adminAuthorized ? { adminAuthorized: true, guests } : guests);ts);
     }
 
     if (req.method === 'POST') {
