@@ -131,26 +131,20 @@
             to { opacity: 1; transform: scale(1.08); }
         }
 
-        /* Fun character slideshow */
+        /* Fade transitions for all slideshow images */
+        #venueMainImage,
+        #costumeCharacterImage {
+            opacity: 1;
+        }
+        .slideshow-fade {
+            animation: slideshowFade .7s ease-in-out both;
+        }
+        @keyframes slideshowFade {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
         #costumeCharacterStage {
             min-height: 220px;
-        }
-        #costumeCharacterImage {
-            animation: costumeWiggle 2.8s ease-in-out infinite;
-            transform-origin: 50% 85%;
-        }
-        @keyframes costumeWiggle {
-            0%, 100% { transform: rotate(-2deg) translateY(0); }
-            25% { transform: rotate(2deg) translateY(-5px); }
-            50% { transform: rotate(-1deg) translateY(-9px); }
-            75% { transform: rotate(2deg) translateY(-4px); }
-        }
-        .costume-slide-in {
-            animation: costumeSlideIn .55s ease-out both;
-        }
-        @keyframes costumeSlideIn {
-            from { opacity: 0; transform: translateX(24px) scale(.96) rotate(3deg); }
-            to { opacity: 1; transform: translateX(0) scale(1) rotate(0); }
         }
 
         /* Envelope intro styles */
@@ -384,7 +378,7 @@
                 <img id="costumeCharacterImage"
                      src="https://dev.cerehe.ph/wp-content/uploads/2026/09/Chirstmas-Costume-Ideas-1.png"
                      alt="Christmas cosplay character idea"
-                     class="costume-slide-in max-h-[320px] sm:max-h-[390px] w-auto max-w-full object-contain drop-shadow-[0_18px_25px_rgba(0,0,0,0.45)]">
+                     class="max-h-[320px] sm:max-h-[390px] w-auto max-w-full object-contain drop-shadow-[0_18px_25px_rgba(0,0,0,0.45)]">
             </div>
 
             <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Cosplay As Your Favorite Character And Win A Special Prize!</h2>
@@ -693,7 +687,10 @@
 
         function renderVenueImage() {
             const image = document.getElementById('venueMainImage');
+            image.classList.remove('slideshow-fade');
+            void image.offsetWidth;
             image.src = venueImages[currentVenueImage];
+            image.classList.add('slideshow-fade');
             image.alt = `Elijosh Resort View ${currentVenueImage + 1}`;
 
             document.getElementById('venueImageNumber').innerText = currentVenueImage + 1;
@@ -796,10 +793,10 @@
 
         function showNextCostumeCharacter() {
             costumeCharacterIndex = (costumeCharacterIndex + 1) % costumeCharacterImages.length;
-            costumeCharacterImage.classList.remove('costume-slide-in');
+            costumeCharacterImage.classList.remove('slideshow-fade');
             void costumeCharacterImage.offsetWidth;
             costumeCharacterImage.src = costumeCharacterImages[costumeCharacterIndex];
-            costumeCharacterImage.classList.add('costume-slide-in');
+            costumeCharacterImage.classList.add('slideshow-fade');
         }
 
         setInterval(showNextCostumeCharacter, 3500);
