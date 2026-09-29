@@ -139,6 +139,21 @@
         .slideshow-fade {
             animation: slideshowFade .7s ease-in-out both;
         }
+        #venueSwipeArea {
+            touch-action: pan-y;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        #costumeCharacterImage {
+            animation: costumeWiggle 2.8s ease-in-out infinite;
+            transform-origin: 50% 85%;
+        }
+        @keyframes costumeWiggle {
+            0%, 100% { transform: rotate(-2deg) translateY(0); }
+            25% { transform: rotate(2deg) translateY(-5px); }
+            50% { transform: rotate(-1deg) translateY(-9px); }
+            75% { transform: rotate(2deg) translateY(-4px); }
+        }
         @keyframes slideshowFade {
             0% { opacity: 0; }
             100% { opacity: 1; }
@@ -398,7 +413,7 @@
         </div>
 
         <div class="glass-card rounded-3xl overflow-hidden shadow-2xl border border-white/15 relative">
-            <div class="relative aspect-[4/3] w-full bg-slate-900 overflow-hidden">
+            <div id="venueSwipeArea" class="relative aspect-[4/3] w-full bg-slate-900 overflow-hidden">
                 <button type="button" onclick="prevVenueImage()" class="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 z-10 bg-black/55 hover:bg-black/80 text-white w-11 h-11 rounded-full flex items-center justify-center backdrop-blur transition shadow-lg" aria-label="Previous venue photo">
                     <i class="fa-solid fa-chevron-left"></i>
                 </button>
@@ -766,6 +781,34 @@
         });
 
         renderVenueImage();
+
+        // Automatic venue slideshow + touch swipe
+        let venueAutoTimer = null;
+        function restartVenueAutoPlay() {
+            clearInterval(venueAutoTimer);
+            venueAutoTimer = setInterval(nextVenueImage, 4000);
+        }
+        restartVenueAutoPlay();
+
+        const venueSwipeArea = document.getElementById('venueSwipeArea');
+        let venueTouchStartX = 0;
+        let venueTouchStartY = 0;
+        venueSwipeArea.addEventListener('touchstart', (event) => {
+            if (!event.touches.length) return;
+            venueTouchStartX = event.touches[0].clientX;
+            venueTouchStartY = event.touches[0].clientY;
+        }, { passive: true });
+
+        venueSwipeArea.addEventListener('touchend', (event) => {
+            if (!event.changedTouches.length) return;
+            const dx = event.changedTouches[0].clientX - venueTouchStartX;
+            const dy = event.changedTouches[0].clientY - venueTouchStartY;
+            if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+                if (dx < 0) nextVenueImage();
+                else prevVenueImage();
+                restartVenueAutoPlay();
+            }
+        }, { passive: true });
 
         // 6. Printed Card Modal
         function openPrintedModal() {
