@@ -490,24 +490,12 @@
     </footer>
 
     <!-- Printed Invitation Card Modal -->
-    <div id="printedCardModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-amber-400/40 rounded-3xl max-w-2xl w-full p-6 relative shadow-2xl animate-fadeIn">
-            <button onclick="closePrintedModal()" class="absolute top-4 right-4 bg-slate-800 hover:bg-red-600 text-white w-9 h-9 rounded-full flex items-center justify-center transition shadow">
+    <div id="printedCardModal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="max-w-3xl w-full relative flex flex-col items-center animate-fadeIn">
+            <button onclick="closePrintedModal()" class="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 bg-slate-900/80 hover:bg-red-600 text-white w-9 h-9 rounded-full flex items-center justify-center transition shadow-lg" aria-label="Close printed invitation">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <div class="text-center mb-4">
-                <span class="text-xs uppercase font-bold tracking-widest text-amber-400">Official Poster</span>
-                <h3 class="text-2xl font-extrabold text-white">Printed Invitation Card</h3>
-            </div>
-            <!-- Image preview matching user uploaded card -->
-            <div class="rounded-2xl overflow-hidden border-2 border-amber-400/50 bg-slate-800 max-h-[70vh] flex items-center justify-center">
-                <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/CEREHE-Cosplay-Christmas-Invitation-2026.png" alt="Printed Card" class="w-full h-auto object-contain max-h-[65vh]">
-            </div>
-            <div class="mt-4 text-center">
-                <button onclick="closePrintedModal()" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-xs">
-                    Close Preview
-                </button>
-            </div>
+            <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/CEREHE-Cosplay-Christmas-Invitation-2026.png" alt="Printed Card" class="w-auto max-w-full h-auto max-h-[90vh] object-contain">
         </div>
     </div>
 
