@@ -162,6 +162,15 @@
             min-height: 220px;
         }
 
+        @keyframes holidayMarquee {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        #holidayMessagesTrack {
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
         /* Envelope intro styles */
         #envelopeOverlay {
             transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
@@ -447,6 +456,23 @@
                     Open in Google Maps
                 </a>
             </div>
+        </div>
+    </section>
+
+    <!-- Holiday Greetings Marquee -->
+    <section id="holidayMessages" class="py-8 px-4 bg-slate-950/80 border-y border-amber-400/10">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex items-center gap-3 mb-3 justify-center">
+                <span class="text-amber-300 text-lg">🎄</span>
+                <h3 class="text-xs font-bold uppercase tracking-[0.25em] text-amber-300">Holiday Greetings</h3>
+                <span class="text-amber-300 text-lg">🎄</span>
+            </div>
+            <div class="relative overflow-hidden rounded-2xl border border-amber-400/20 bg-slate-900/80 shadow-lg">
+                <div id="holidayMessagesTrack" class="flex w-max items-center gap-8 py-4 px-6">
+                    <span class="text-sm text-slate-400">Loading holiday greetings...</span>
+                </div>
+            </div>
+            <p class="text-center text-[11px] text-slate-500 mt-2">Messages appear here after they are approved. Names are never shown.</p>
         </div>
     </section>
 
@@ -942,6 +968,48 @@
             }
         }
 
+        function renderHolidayMessages() {
+            const track = document.getElementById('holidayMessagesTrack');
+            if (!track) return;
+
+            const approved = guests.filter(g => g.message && g.message_approved);
+            if (!approved.length) {
+                track.innerHTML = '<span class="text-sm text-slate-500">Be the first to leave a holiday greeting! 🎁</span>';
+                return;
+            }
+
+            const items = approved.map(g =>
+                '<span class="inline-flex items-center gap-2 whitespace-nowrap text-sm font-medium text-slate-100">' +
+                '<span class="text-amber-300">✨</span>' +
+                '<span>' + escapeHtml(g.message) + '</span>' +
+                '<span class="text-red-400">🎄</span></span>'
+            ).join('');
+
+            track.innerHTML = items + items;
+            track.style.animation = 'holidayMarquee 28s linear infinite';
+        }
+
+        async function moderateMessage(id, approved) {
+            try {
+                const response = await fetch('/api/rsvps', {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+                    body: JSON.stringify({ id, message_approved: approved })
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || 'Unable to update message.');
+
+                const guest = guests.find(g => String(g.id) === String(id));
+                if (guest) guest.message_approved = approved;
+                renderGuests();
+                alertBox(approved ? 'Message approved and published.' : 'Message hidden from the marquee.');
+            } catch (error) {
+                console.error(error);
+                alertBox(error.message || 'Unable to update message.');
+            }
+        }
+
         function renderGuests() {
             const container = document.getElementById('guestListContainer');
             document.getElementById('totalGuestCount').innerText = guests.length;
@@ -957,6 +1025,7 @@
             }
 
             renderGuestEditList();
+            renderHolidayMessages();
         }
 
         function renderGuestEditList() {
@@ -969,11 +1038,25 @@
             }
 
             container.innerHTML = guests.map(g => `
-                <div class="flex items-center justify-between gap-3 bg-slate-900/70 p-2.5 rounded-lg border border-white/5">
-                    <span class="text-xs text-white font-semibold">${escapeHtml(g.name)}</span>
-                    <button type="button" onclick="removeGuest('${String(g.id).replace(/'/g, "\\'")}')" class="text-xs text-red-300 hover:text-white bg-red-500/10 hover:bg-red-600/60 border border-red-500/30 px-2.5 py-1 rounded-md transition">
-                        <i class="fa-solid fa-trash mr-1"></i>Remove
-                    </button>
+                <div class="bg-slate-900/70 p-3 rounded-lg border border-white/5">
+                    <div class="flex items-center justify-between gap-3">
+                        <span class="text-xs text-white font-semibold">${escapeHtml(g.name)}</span>
+                        <button type="button" onclick="removeGuest('${String(g.id).replace(/'/g, "\\'")}')" class="text-xs text-red-300 hover:text-white bg-red-500/10 hover:bg-red-600/60 border border-red-500/30 px-2.5 py-1 rounded-md transition">
+                            <i class="fa-solid fa-trash mr-1"></i>Remove
+                        </button>
+                    </div>
+                    ${g.message ? `
+                        <div class="mt-2 text-xs text-slate-300 bg-slate-800/70 rounded-lg p-2.5">
+                            <div class="text-[10px] uppercase tracking-wider text-amber-300 font-bold mb-1">Holiday Message</div>
+                            <div>${escapeHtml(g.message)}</div>
+                            <div class="mt-2 flex items-center justify-between gap-2">
+                                <span class="text-[10px] ${g.message_approved ? 'text-green-300' : 'text-amber-300'}">${g.message_approved ? 'Published on marquee' : 'Pending approval'}</span>
+                                <button type="button" onclick="moderateMessage('${String(g.id).replace(/'/g, "\\'")}', ${!g.message_approved})" class="text-[10px] px-2 py-1 rounded-md border border-amber-400/30 text-amber-300 hover:bg-amber-400/10">
+                                    ${g.message_approved ? 'Hide' : 'Approve'}
+                                </button>
+                            </div>
+                        </div>
+                    ` : ''}
                 </div>
             `).join('');
         }
@@ -1071,7 +1154,8 @@
                     body: JSON.stringify({
                         name,
                         party_size: 1,
-                        attendance
+                        attendance,
+                        message: document.getElementById('guestMessage').value.trim()
                     })
                 });
 
