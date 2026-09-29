@@ -475,28 +475,7 @@
                         </div>
                     </div>
 
-                    <div id="guestListContainer" class="space-y-2 max-h-48 overflow-y-auto pr-2">
-                        <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs">
-                            <div>
-                                <span class="font-bold text-white">Engr. Alex Santos</span>
-                            </div>
-                        </div>
-                        <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs">
-                            <div>
-                                <span class="font-bold text-white">Maria Reyes</span>
-                            </div>
-                        </div>
-                        <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs">
-                            <div>
-                                <span class="font-bold text-white">Mark Joseph</span>
-                            </div>
-                        </div>
-                        <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs">
-                            <div>
-                                <span class="font-bold text-white">Sarah Jenkins</span>
-                            </div>
-                        </div>
-                    </div>
+                    <div id="guestListContainer" class="space-y-2 max-h-48 overflow-y-auto pr-2"></div>
                 </div>
             </div>
         </div>
@@ -821,32 +800,56 @@
         youtubeApiScript.src = 'https://www.youtube.com/iframe_api';
         document.head.appendChild(youtubeApiScript);
 
-        // 8. RSVP Form Handler & Guestlist State
-        let guests = [
-            { name: "Engr. Alex Santos", partySize: "1 Person", status: "Attending 🎉" },
-            { name: "Maria Reyes", partySize: "2 People (+1 Guest)", status: "Attending 🎉" },
-            { name: "Mark Joseph", partySize: "1 Person", status: "Attending 🎉" },
-            { name: "Sarah Jenkins", partySize: "3 People", status: "Attending 🎉" }
-        ];
+        // 8. RSVP Form Handler & Guestlist State - Supabase-backed
+        let guests = [];
+        let adminPassword = '';
+
+        async function loadGuests() {
+            const container = document.getElementById('guestListContainer');
+            container.innerHTML = '<div class="text-center text-xs text-slate-400 py-4"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Loading confirmed guests...</div>';
+
+            try {
+                const response = await fetch('/api/rsvps', { cache: 'no-store' });
+                if (!response.ok) throw new Error('Could not load guest list.');
+                guests = await response.json();
+                renderGuests();
+            } catch (error) {
+                console.error(error);
+                container.innerHTML = '<div class="text-center text-xs text-red-300 py-4">Unable to load the guest list. Please refresh the page.</div>';
+                document.getElementById('totalGuestCount').innerText = '0';
+            }
+        }
 
         function renderGuests() {
             const container = document.getElementById('guestListContainer');
             document.getElementById('totalGuestCount').innerText = guests.length;
-            container.innerHTML = guests.map(g => `
-                <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex items-center text-xs animate-fadeIn">
-                    <span class="font-bold text-white">${escapeHtml(g.name)}</span>
-                </div>
-            `).join('');
+
+            if (!guests.length) {
+                container.innerHTML = '<div class="text-center text-xs text-slate-400 py-4">No confirmed guests yet. Be the first to RSVP! 🎉</div>';
+            } else {
+                container.innerHTML = guests.map(g => `
+                    <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex items-center text-xs animate-fadeIn">
+                        <span class="font-bold text-white">${escapeHtml(g.name)}</span>
+                    </div>
+                `).join('');
+            }
+
             renderGuestEditList();
         }
 
         function renderGuestEditList() {
             const container = document.getElementById('guestEditList');
             if (!container) return;
-            container.innerHTML = guests.map((g, index) => `
+
+            if (!guests.length) {
+                container.innerHTML = '<div class="text-xs text-slate-400 py-2">No confirmed guests.</div>';
+                return;
+            }
+
+            container.innerHTML = guests.map(g => `
                 <div class="flex items-center justify-between gap-3 bg-slate-900/70 p-2.5 rounded-lg border border-white/5">
                     <span class="text-xs text-white font-semibold">${escapeHtml(g.name)}</span>
-                    <button type="button" onclick="removeGuest(${index})" class="text-xs text-red-300 hover:text-white bg-red-500/10 hover:bg-red-600/60 border border-red-500/30 px-2.5 py-1 rounded-md transition">
+                    <button type="button" onclick="removeGuest('${String(g.id).replace(/'/g, "\\'")}')" class="text-xs text-red-300 hover:text-white bg-red-500/10 hover:bg-red-600/60 border border-red-500/30 px-2.5 py-1 rounded-md transition">
                         <i class="fa-solid fa-trash mr-1"></i>Remove
                     </button>
                 </div>
@@ -859,46 +862,115 @@
             document.getElementById('guestEditControls').classList.add('hidden');
             document.getElementById('guestEditPass').value = '';
             document.getElementById('guestPassError').classList.add('hidden');
+            adminPassword = '';
         }
 
-        function verifyGuestEditPass() {
+        async function verifyGuestEditPass() {
             const pass = document.getElementById('guestEditPass').value;
-            if (pass === 'CEREHE') {
-                document.getElementById('guestPassStep').classList.add('hidden');
-                document.getElementById('guestEditControls').classList.remove('hidden');
-                renderGuestEditList();
-            } else {
-                document.getElementById('guestPassError').classList.remove('hidden');
+            const error = document.getElementById('guestPassError');
+            error.classList.add('hidden');
+
+            try {
+                const response = await fetch('/api/rsvps', {
+                    headers: { 'x-admin-password': pass }
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.adminAuthorized) {
+                    adminPassword = pass;
+                    document.getElementById('guestPassStep').classList.add('hidden');
+                    document.getElementById('guestEditControls').classList.remove('hidden');
+                    renderGuestEditList();
+                } else {
+                    error.textContent = 'Incorrect pass.';
+                    error.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error(error);
+                error.textContent = 'Unable to verify the pass. Please try again.';
+                error.classList.remove('hidden');
             }
         }
 
         function closeGuestEditor() {
             document.getElementById('guestEditor').classList.add('hidden');
+            adminPassword = '';
         }
 
-        function removeGuest(index) {
-            if (!confirm(`Remove ${guests[index].name} from the confirmed guest list?`)) return;
-            guests.splice(index, 1);
-            renderGuests();
-        }
+        async function removeGuest(id) {
+            const guest = guests.find(g => String(g.id) === String(id));
+            if (!guest) return;
+            if (!confirm(`Remove ${guest.name} from the confirmed guest list?`)) return;
 
-        function handleRSVP(event) {
-            event.preventDefault();
-            const name = document.getElementById('guestName').value;
-            const partySize = "1 Person";
-            const attendance = document.getElementById('guestAttendance').value;
-
-            if (attendance === "Yes, absolutely! 🎉") {
-                guests.unshift({
-                    name: name,
-                    partySize: partySize,
-                    status: attendance
+            try {
+                const response = await fetch('/api/rsvps', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-admin-password': adminPassword
+                    },
+                    body: JSON.stringify({ id })
                 });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Unable to remove guest.');
+                }
+
+                guests = guests.filter(g => String(g.id) !== String(id));
                 renderGuests();
+                alertBox('Guest removed permanently.');
+            } catch (error) {
+                console.error(error);
+                alertBox(error.message || 'Unable to remove guest.');
+            }
+        }
+
+        async function handleRSVP(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('guestName').value.trim();
+            const attendance = document.getElementById('guestAttendance').value;
+            const submitButton = event.target.querySelector('button[type="submit"]');
+
+            if (!name) return;
+
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Saving RSVP...</span>';
             }
 
-            document.getElementById('rsvpForm').classList.add('hidden');
-            document.getElementById('rsvpSuccess').classList.remove('hidden');
+            try {
+                const response = await fetch('/api/rsvps', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name,
+                        party_size: 1,
+                        attendance
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Unable to save RSVP.');
+                }
+
+                await loadGuests();
+                document.getElementById('rsvpForm').classList.add('hidden');
+                document.getElementById('rsvpSuccess').classList.remove('hidden');
+            } catch (error) {
+                console.error(error);
+                alertBox(error.message || 'Unable to save RSVP. Please try again.');
+            } finally {
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fa-solid fa-paper-plane"></i><span>Submit RSVP & Join Guestlist</span>';
+                }
+            }
         }
 
         function resetRSVPForm() {
@@ -909,16 +981,18 @@
 
         function escapeHtml(text) {
             const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+            return String(text ?? '').replace(/[&<>"']/g, function(m) { return map[m]; });
         }
 
         function alertBox(msg) {
             const div = document.createElement('div');
             div.className = 'fixed bottom-5 right-5 z-50 bg-slate-900 border border-amber-400 text-white px-6 py-3 rounded-xl shadow-2xl text-xs font-semibold animate-bounce';
-            div.innerHTML = `<i class="fa-solid fa-bell text-amber-400 mr-2"></i> ${msg}`;
+            div.innerHTML = `<i class="fa-solid fa-bell text-amber-400 mr-2"></i> ${escapeHtml(msg)}`;
             document.body.appendChild(div);
             setTimeout(() => div.remove(), 4000);
         }
+
+        loadGuests();
     </script>
 </body>
 </html>
