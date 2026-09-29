@@ -45,7 +45,7 @@ export default async function handler(req, res) {
       }
 
       const guests = await response.json();
-      return json(res, 200, adminAuthorized ? { adminAuthorized: true, guests } : guests);ts);
+      return json(res, 200, adminAuthorized ? { adminAuthorized: true, guests } : guests);
     }
 
     if (req.method === 'POST') {
