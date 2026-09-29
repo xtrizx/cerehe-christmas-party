@@ -164,11 +164,29 @@
 
         @keyframes holidayMarquee {
             from { transform: translateX(0); }
-            to { transform: translateX(-50%); }
+            to { transform: translateX(calc(-50% - 1rem)); }
         }
         #holidayMessagesTrack {
+            display: flex;
+            width: max-content;
             animation-timing-function: linear;
             animation-iteration-count: infinite;
+        }
+        .holiday-marquee-sequence {
+            display: flex;
+            flex-shrink: 0;
+            align-items: center;
+            gap: 2rem;
+            padding: 1rem 1.5rem;
+        }
+        #holidayMessagesTrack.centered {
+            width: 100%;
+            justify-content: center;
+            animation: none !important;
+        }
+        #holidayMessagesTrack.centered .holiday-marquee-sequence {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
         }
 
         /* Envelope intro styles */
@@ -973,8 +991,12 @@
             if (!track) return;
 
             const approved = guests.filter(g => g.message && g.message_approved);
+            track.classList.remove('centered');
+            track.style.animation = 'none';
+
             if (!approved.length) {
-                track.innerHTML = '<span class="text-sm text-slate-500">Be the first to leave a holiday greeting! 🎁</span>';
+                track.innerHTML = '<div class="w-full text-center py-4"><span class="text-sm text-slate-500">Be the first to leave a holiday greeting! 🎁</span></div>';
+                track.classList.add('centered');
                 return;
             }
 
@@ -985,8 +1007,26 @@
                 '<span class="text-red-400">🎄</span></span>'
             ).join('');
 
-            track.innerHTML = items + items;
-            track.style.animation = 'holidayMarquee 28s linear infinite';
+            // Render one sequence first so short message sets can stay centered.
+            track.innerHTML = '<div class="holiday-marquee-sequence">' + items + '</div>';
+
+            requestAnimationFrame(() => {
+                const viewport = track.parentElement;
+                const sequence = track.querySelector('.holiday-marquee-sequence');
+                if (!viewport || !sequence) return;
+
+                if (sequence.scrollWidth <= viewport.clientWidth) {
+                    track.classList.add('centered');
+                    return;
+                }
+
+                // Long message sets scroll seamlessly using two identical sequences.
+                track.innerHTML =
+                    '<div class="holiday-marquee-sequence">' + items + '</div>' +
+                    '<div class="holiday-marquee-sequence" aria-hidden="true">' + items + '</div>';
+                track.classList.remove('centered');
+                track.style.animation = 'holidayMarquee 28s linear infinite';
+            });
         }
 
         async function moderateMessage(id, approved) {
