@@ -302,6 +302,10 @@
                 <a href="#rsvp" class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white px-4 py-1.5 rounded-full text-xs md:text-sm font-bold shadow-lg shadow-red-600/40 transition transform hover:scale-105">
                     <i class="fa-solid fa-gift mr-1"></i> RSVP
                 </a>
+                <a href="https://cerehe.ph" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-blue-300 px-3 py-1.5 rounded-full text-xs font-semibold border border-blue-400/30 transition" aria-label="Visit CEREHE website">
+                    <i class="fa-solid fa-globe"></i>
+                    <span class="hidden sm:inline">Visit Website</span>
+                </a>
             </div>
         </div>
     </nav>
@@ -611,12 +615,16 @@
     </footer>
 
     <!-- Printed Invitation Card Modal -->
-    <div id="printedCardModal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="max-w-3xl w-full relative flex flex-col items-center animate-fadeIn">
-            <button onclick="closePrintedModal()" class="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 bg-slate-900/80 hover:bg-red-600 text-white w-9 h-9 rounded-full flex items-center justify-center transition shadow-lg" aria-label="Close printed invitation">
+    <div id="printedCardModal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4" onclick="closePrintedModal()">
+        <div class="max-w-3xl w-full relative flex flex-col items-center animate-fadeIn" onclick="event.stopPropagation()">
+            <button onclick="closePrintedModal()" class="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 bg-slate-900/90 hover:bg-red-600 text-white w-11 h-11 rounded-full flex items-center justify-center transition shadow-lg text-lg" aria-label="Close printed invitation">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/CEREHE-Cosplay-Christmas-Invitation-2026.png" alt="Printed Card" class="w-auto max-w-full h-auto max-h-[90vh] object-contain">
+            <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/CEREHE-Cosplay-Christmas-Invitation-2026.png" alt="Printed Card" onclick="closePrintedModal()" class="w-auto max-w-full h-auto max-h-[calc(100vh-120px)] object-contain cursor-pointer" title="Tap the invitation to close">
+            <a href="https://dev.cerehe.ph/wp-content/uploads/2026/09/CEREHE-Cosplay-Christmas-Invitation-2026.png" download="CEREHE-Cosplay-Christmas-Invitation-2026.png" class="mt-4 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 px-6 py-3 rounded-full text-sm font-bold shadow-lg transition">
+                <i class="fa-solid fa-download"></i>
+                <span>Download</span>
+            </a>
         </div>
     </div>
 
