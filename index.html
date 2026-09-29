@@ -101,6 +101,58 @@
             touch-action: manipulation;
         }
 
+        /* Christmas fairy lights along both page sides */
+        .side-fairy-lights {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 34px;
+            z-index: 35;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            padding: 28px 0;
+        }
+        .side-fairy-lights.left { left: 0; }
+        .side-fairy-lights.right { right: 0; }
+        .side-fairy-lights .light {
+            width: 9px;
+            height: 13px;
+            border-radius: 50% 50% 45% 45%;
+            box-shadow: 0 0 10px currentColor, 0 0 18px currentColor;
+            animation: sideLightTwinkle 1.4s ease-in-out infinite alternate;
+        }
+        .side-fairy-lights .light:nth-child(2n) { animation-delay: .35s; }
+        .side-fairy-lights .light:nth-child(3n) { animation-delay: .7s; }
+        @keyframes sideLightTwinkle {
+            from { opacity: .45; transform: scale(.82); }
+            to { opacity: 1; transform: scale(1.08); }
+        }
+
+        /* Fun character slideshow */
+        #costumeCharacterStage {
+            min-height: 220px;
+        }
+        #costumeCharacterImage {
+            animation: costumeWiggle 2.8s ease-in-out infinite;
+            transform-origin: 50% 85%;
+        }
+        @keyframes costumeWiggle {
+            0%, 100% { transform: rotate(-2deg) translateY(0); }
+            25% { transform: rotate(2deg) translateY(-5px); }
+            50% { transform: rotate(-1deg) translateY(-9px); }
+            75% { transform: rotate(2deg) translateY(-4px); }
+        }
+        .costume-slide-in {
+            animation: costumeSlideIn .55s ease-out both;
+        }
+        @keyframes costumeSlideIn {
+            from { opacity: 0; transform: translateX(24px) scale(.96) rotate(3deg); }
+            to { opacity: 1; transform: translateX(0) scale(1) rotate(0); }
+        }
+
         /* Envelope intro styles */
         #envelopeOverlay {
             transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
@@ -161,6 +213,14 @@
         </div>
 
         <p class="text-slate-400 text-xs mt-6">Click the seal to open your magical invitation</p>
+    </div>
+
+    <!-- Christmas Fairy Lights on both sides -->
+    <div class="side-fairy-lights left hidden sm:flex" aria-hidden="true">
+        <span class="light" style="background:#ff3333;color:#ff3333"></span><span class="light" style="background:#ffd700;color:#ffd700"></span><span class="light" style="background:#00ff66;color:#00ff66"></span><span class="light" style="background:#00ffff;color:#00ffff"></span><span class="light" style="background:#ff3333;color:#ff3333"></span><span class="light" style="background:#ffd700;color:#ffd700"></span><span class="light" style="background:#00ff66;color:#00ff66"></span><span class="light" style="background:#00ffff;color:#00ffff"></span><span class="light" style="background:#ff3333;color:#ff3333"></span><span class="light" style="background:#ffd700;color:#ffd700"></span><span class="light" style="background:#00ff66;color:#00ff66"></span><span class="light" style="background:#00ffff;color:#00ffff"></span>
+    </div>
+    <div class="side-fairy-lights right hidden sm:flex" aria-hidden="true">
+        <span class="light" style="background:#00ffff;color:#00ffff"></span><span class="light" style="background:#00ff66;color:#00ff66"></span><span class="light" style="background:#ffd700;color:#ffd700"></span><span class="light" style="background:#ff3333;color:#ff3333"></span><span class="light" style="background:#00ffff;color:#00ffff"></span><span class="light" style="background:#00ff66;color:#00ff66"></span><span class="light" style="background:#ffd700;color:#ffd700"></span><span class="light" style="background:#ff3333;color:#ff3333"></span><span class="light" style="background:#00ffff;color:#00ffff"></span><span class="light" style="background:#00ff66;color:#00ff66"></span><span class="light" style="background:#ffd700;color:#ffd700"></span><span class="light" style="background:#ff3333;color:#ff3333"></span>
     </div>
 
     <!-- Snowfall Canvas -->
@@ -234,7 +294,7 @@
 
             <!-- Quick Event Details Badges -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto mb-10">
-                <div class="glass-card p-4 rounded-2xl border-l-4 border-l-red-500 flex items-center space-x-3 text-left">
+                <div class="glass-card p-4 rounded-2xl border-b-4 border-b-red-500 flex items-center space-x-3 text-left">
                     <div class="bg-red-500/20 p-3 rounded-xl text-red-400 text-xl">
                         <i class="fa-solid fa-calendar-days"></i>
                     </div>
@@ -256,7 +316,7 @@
                     </div>
                 </div>
 
-                <div class="glass-card p-4 rounded-2xl border-l-4 border-l-blue-500 flex items-center space-x-3 text-left">
+                <div class="glass-card p-4 rounded-2xl border-b-4 border-b-blue-500 flex items-center space-x-3 text-left">
                     <div class="bg-blue-500/20 p-3 rounded-xl text-blue-400 text-xl">
                         <i class="fa-solid fa-location-dot"></i>
                     </div>
@@ -318,6 +378,15 @@
             <div class="inline-block bg-amber-400/10 text-amber-300 text-xs font-bold px-3 py-1 rounded-full uppercase mb-3 border border-amber-400/20">
                 🌟 Costume Notice 🌟
             </div>
+
+            <!-- Automatic Christmas Character Slideshow -->
+            <div id="costumeCharacterStage" class="relative max-w-3xl mx-auto mb-8 flex items-center justify-center overflow-hidden">
+                <img id="costumeCharacterImage"
+                     src="https://dev.cerehe.ph/wp-content/uploads/2026/09/Chirstmas-Costume-Ideas-1.png"
+                     alt="Christmas cosplay character idea"
+                     class="costume-slide-in max-h-[320px] sm:max-h-[390px] w-auto max-w-full object-contain drop-shadow-[0_18px_25px_rgba(0,0,0,0.45)]">
+            </div>
+
             <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Cosplay As Your Favorite Character And Win A Special Prize!</h2>
             <p class="text-slate-300 max-w-2xl mx-auto text-base mb-6">
                 Dress up as your favorite hero, anime icon, or legendary character. Compete in our holiday contest for wonderful prizes!
@@ -709,6 +778,31 @@
         function closePrintedModal() {
             document.getElementById('printedCardModal').classList.add('hidden');
         }
+
+        // 6.5 Automatic Christmas Character Slideshow
+        const costumeCharacterImages = [
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/Chirstmas-Costume-Ideas-1.png',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/Chirstmas-Costume-Ideas-2.png',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/Chirstmas-Costume-Ideas-3.png',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/Chirstmas-Costume-Ideas-4.png',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/Chirstmas-Costume-Ideas-5.png',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/Chirstmas-Costume-Ideas-6.png',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/Chirstmas-Costume-Ideas-7.png',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/Chirstmas-Costume-Ideas-8.png',
+            'https://dev.cerehe.ph/wp-content/uploads/2026/09/Chirstmas-Costume-Ideas-9.png'
+        ];
+        let costumeCharacterIndex = 0;
+        const costumeCharacterImage = document.getElementById('costumeCharacterImage');
+
+        function showNextCostumeCharacter() {
+            costumeCharacterIndex = (costumeCharacterIndex + 1) % costumeCharacterImages.length;
+            costumeCharacterImage.classList.remove('costume-slide-in');
+            void costumeCharacterImage.offsetWidth;
+            costumeCharacterImage.src = costumeCharacterImages[costumeCharacterIndex];
+            costumeCharacterImage.classList.add('costume-slide-in');
+        }
+
+        setInterval(showNextCostumeCharacter, 3500);
 
         // 7. YouTube Background Music
         let youtubePlayer = null;
