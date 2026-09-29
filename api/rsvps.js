@@ -25,16 +25,10 @@ export default async function handler(req, res) {
   try {
     if (req.method === 'GET') {
       const adminAuthorized = req.headers['x-admin-password'] === RSVP_ADMIN_PASSWORD;
-      const select = adminAuthorized
-        ? 'id,name,party_size,attendance,message,message_approved,created_at'
-        : 'id,message,message_approved,created_at';
-
-      const filters = adminAuthorized
-        ? '&order=created_at.desc'
-        : '&message_approved=eq.true&message=not.is.null&order=created_at.desc';
+      const select = 'id,name,party_size,attendance,message,message_approved,created_at';
 
       const response = await fetch(
-        `${SUPABASE_URL}/rest/v1/rsvps?select=${select}&attendance=eq.Yes%2C%20absolutely!%20%F0%9F%8E%89${filters}`,
+        `${SUPABASE_URL}/rest/v1/rsvps?select=${select}&attendance=eq.Yes%2C%20absolutely!%20%F0%9F%8E%89&order=created_at.desc`,
         { headers: supabaseHeaders() }
       );
 
@@ -45,7 +39,23 @@ export default async function handler(req, res) {
       }
 
       const guests = await response.json();
-      return json(res, 200, adminAuthorized ? { adminAuthorized: true, guests } : guests);
+
+      if (adminAuthorized) {
+        return json(res, 200, { adminAuthorized: true, guests });
+      }
+
+      // Keep the public guest list visible, but never expose an unapproved message.
+      const publicGuests = guests.map((guest) => ({
+        id: guest.id,
+        name: guest.name,
+        party_size: guest.party_size,
+        attendance: guest.attendance,
+        message: guest.message_approved ? guest.message : null,
+        message_approved: Boolean(guest.message_approved),
+        created_at: guest.created_at,
+      }));
+
+      return json(res, 200, publicGuests);
     }
 
     if (req.method === 'POST') {
