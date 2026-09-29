@@ -25,7 +25,7 @@ export default async function handler(req, res) {
   try {
     if (req.method === 'GET') {
       const response = await fetch(
-        `${SUPABASE_URL}/rest/v1/rsvps?select=id,name,party_size,attendance,created_at&attendance=eq.Yes%2C%20absolutely!%20%F0%9F%8E%89&order=created_at.desc`,
+        `${SUPABASE_URL}/rest/v1/rsvps?select=id,name,party_size,attendance,message,message_approved,created_at&attendance=eq.Yes%2C%20absolutely!%20%F0%9F%8E%89&order=created_at.desc`,
         { headers: supabaseHeaders() }
       );
 
@@ -41,7 +41,7 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'POST') {
-      const { name, party_size = 1, attendance } = req.body || {};
+      const { name, party_size = 1, attendance, message = '' } = req.body || {};
 
       if (!name || !String(name).trim()) {
         return json(res, 400, { error: 'Please enter your name.' });
@@ -58,6 +58,8 @@ export default async function handler(req, res) {
           name: String(name).trim(),
           party_size: Number(party_size) || 1,
           attendance: String(attendance),
+          message: String(message || '').trim().slice(0, 500),
+          message_approved: false,
         }]),
       });
 
@@ -69,6 +71,35 @@ export default async function handler(req, res) {
 
       const created = await response.json();
       return json(res, 201, created[0]);
+    }
+
+    if (req.method === 'PATCH') {
+      if (req.headers['x-admin-password'] !== RSVP_ADMIN_PASSWORD) {
+        return json(res, 401, { error: 'Incorrect admin pass.' });
+      }
+
+      const { id, message_approved } = req.body || {};
+      if (!id || typeof message_approved !== 'boolean') {
+        return json(res, 400, { error: 'Message ID and approval status are required.' });
+      }
+
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/rsvps?id=eq.${encodeURIComponent(id)}`,
+        {
+          method: 'PATCH',
+          headers: { ...supabaseHeaders(), Prefer: 'return=representation' },
+          body: JSON.stringify({ message_approved }),
+        }
+      );
+
+      if (!response.ok) {
+        const details = await response.text();
+        console.error('Supabase PATCH error:', details);
+        return json(res, 500, { error: 'Unable to update message approval.' });
+      }
+
+      const updated = await response.json();
+      return json(res, 200, updated[0] || { success: true });
     }
 
     if (req.method === 'DELETE') {
@@ -96,7 +127,7 @@ export default async function handler(req, res) {
       return json(res, 200, { success: true });
     }
 
-    res.setHeader('Allow', 'GET, POST, DELETE');
+    res.setHeader('Allow', 'GET, POST, PATCH, DELETE');
     return json(res, 405, { error: 'Method not allowed.' });
   } catch (error) {
     console.error('RSVP API error:', error);
