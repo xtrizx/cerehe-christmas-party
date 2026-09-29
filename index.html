@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEREHE Engineering Works - Cosplay Christmas Party 2026</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for festive icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Poppins:wght@300;400;500;600;700;800&family=Mountains+of+Christmas:wght@700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        festive: ['"Mountains of Christmas"', 'cursive'],
+                        fun: ['Fredoka', 'sans-serif']
+                    },
+                    colors: {
+                        festiveRed: '#c8102e',
+                        festiveGreen: '#0f5132',
+                        festiveGold: '#ffb703',
+                        deepNight: '#07101f',
+                        poolBlue: '#1b263b',
+                        envelopeBg: '#b91c1c'
+                    },
+                    animation: {
+                        'float': 'float 4s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'twinkle': 'twinkle 2s ease-in-out infinite alternate',
+                        'bounce-gentle': 'bounceGentle 2s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        twinkle: {
+                            '0%': { opacity: 0.4, transform: 'scale(0.95)' },
+                            '100%': { opacity: 1, transform: 'scale(1.08)' }
+                        },
+                        bounceGentle: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-6px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .string-lights {
+            display: flex;
+            justify-content: space-around;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 0 10px;
+            pointer-events: none;
+            z-index: 20;
+        }
+        .lightbulb {
+            width: 14px;
+            height: 18px;
+            border-radius: 50% 50% 40% 40%;
+            margin-top: -4px;
+            animation: twinkle 1.2s infinite alternate;
+            box-shadow: 0 0 12px currentColor;
+        }
+        .light-red { background-color: #ff3333; color: #ff3333; animation-delay: 0.1s; }
+        .light-yellow { background-color: #ffd700; color: #ffd700; animation-delay: 0.3s; }
+        .light-green { background-color: #00ff66; color: #00ff66; animation-delay: 0.5s; }
+        .light-blue { background-color: #00ffff; color: #00ffff; animation-delay: 0.7s; }
+        
+        #snowCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .glass-card {
+            background: rgba(15, 23, 42, 0.82);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        /* Envelope intro styles */
+        #envelopeOverlay {
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
+        }
+        .envelope-flap {
+            transition: transform 0.8s ease-in-out;
+            transform-origin: top;
+        }
+        .envelope-open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 10;
+        }
+        .envelope-open #invitationCardInside {
+            transform: translateY(-220px) scale(1);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-deepNight text-slate-100 font-sans selection:bg-red-600 selection:text-white min-h-screen relative overflow-x-hidden">
+
+    <!-- Envelope Intro Overlay -->
+    <div id="envelopeOverlay" class="fixed inset-0 z-50 bg-gradient-to-br from-deepNight via-slate-900 to-red-950 flex flex-col items-center justify-center p-4">
+        <div class="text-center mb-6 animate-bounce-gentle">
+            <span class="bg-amber-400/20 text-amber-300 border border-amber-400/40 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
+                ✨ Special Holiday Invitation ✨
+            </span>
+            <h1 class="text-4xl sm:text-6xl font-extrabold font-festive text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-amber-300 to-green-400 mt-3 drop-shadow-lg">
+                You're Invited!
+            </h1>
+        </div>
+
+        <!-- Realistic Folded Envelope Container -->
+        <div id="envelopeBox" class="relative w-full max-w-md sm:max-w-lg aspect-[4/3] bg-red-700 rounded-2xl shadow-2xl border-4 border-amber-400/80 p-6 flex flex-col justify-end items-center overflow-hidden cursor-pointer group" onclick="openEnvelope()">
+            
+            <!-- Envelope Back Pocket -->
+            <div class="absolute inset-0 bg-gradient-to-t from-red-900 to-red-700 pointer-events-none rounded-xl"></div>
+
+            <!-- Slide-out Invitation inside Envelope -->
+            <div id="invitationCardInside" class="absolute w-[85%] bg-slate-900 border-2 border-amber-400 p-6 rounded-xl shadow-2xl text-center transform translate-y-32 opacity-0 transition-all duration-1000 z-20">
+                <div class="text-amber-400 font-bold text-xs uppercase tracking-widest mb-1">CEREHE Engineering Works</div>
+                <div class="text-xl sm:text-2xl font-extrabold font-festive text-red-400 mb-2">Cosplay Christmas Party 2026</div>
+                <div class="text-xs text-slate-300 mb-3">December 19, 2026 • Elijosh Resort</div>
+                <div class="text-xs text-green-300 font-semibold bg-green-900/40 py-1 rounded">Unfolding Party Site...</div>
+            </div>
+
+            <!-- Envelope Flap -->
+            <div id="envelopeFlap" class="absolute top-0 left-0 right-0 h-1/2 bg-red-800 border-b-4 border-amber-400/80 rounded-t-2xl shadow-md origin-top flex items-center justify-center z-30" style="clip-path: polygon(0 0, 100% 0, 50% 100%);">
+            </div>
+
+            <!-- Wax Seal / Open Button -->
+            <div class="relative z-40 mb-8 transform group-hover:scale-110 transition duration-300">
+                <button type="button" class="bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-600 text-slate-950 font-black px-8 py-3.5 rounded-full shadow-[0_0_25px_rgba(251,191,36,0.6)] text-base uppercase tracking-wider border-2 border-white flex items-center space-x-2">
+                    <i class="fa-solid fa-gift mr-1"></i>
+                    <span>Open Invitation</span>
+                </button>
+            </div>
+        </div>
+
+        <p class="text-slate-400 text-xs mt-6">Click the seal to open your magical invitation</p>
+    </div>
+
+    <!-- Snowfall Canvas -->
+    <canvas id="snowCanvas"></canvas>
+
+    <!-- Hanging Christmas Lights bar -->
+    <div class="string-lights hidden sm:flex">
+        <span class="lightbulb light-red"></span>
+        <span class="lightbulb light-yellow"></span>
+        <span class="lightbulb light-green"></span>
+        <span class="lightbulb light-blue"></span>
+        <span class="lightbulb light-red"></span>
+        <span class="lightbulb light-yellow"></span>
+        <span class="lightbulb light-green"></span>
+        <span class="lightbulb light-blue"></span>
+        <span class="lightbulb light-red"></span>
+        <span class="lightbulb light-yellow"></span>
+        <span class="lightbulb light-green"></span>
+        <span class="lightbulb light-blue"></span>
+        <span class="lightbulb light-red"></span>
+        <span class="lightbulb light-yellow"></span>
+        <span class="lightbulb light-green"></span>
+        <span class="lightbulb light-blue"></span>
+    </div>
+
+    <!-- Background Music Audio -->
+    <audio id="bgMusic" loop>
+        <source src="https://actions.google.com/sounds/v1/holidays/christmas_bells.ogg" type="audio/ogg">
+    </audio>
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-40 glass-card border-b border-white/10 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <!-- Editable Logo Container -->
+                <div id="logoContainer" class="flex items-center space-x-2 bg-gradient-to-r from-red-600 to-amber-500 text-white font-black px-3 py-1.5 rounded-xl text-sm md:text-base shadow-lg shadow-red-900/30">
+                    <img id="companyLogoImg" src="https://placehold.co/120x40/ffffff/d42426?text=CEREHE+LOGO" alt="Company Logo" class="h-6 object-contain hidden" onerror="this.classList.add('hidden')">
+                    <span id="companyLogoText">CEREHE ENGINEERING</span>
+                </div>
+                <!-- Change Logo Button -->
+                <button onclick="triggerLogoUpload()" title="Upload Company Logo" class="text-xs text-amber-300 bg-slate-800 hover:bg-slate-700 px-2.5 py-1.5 rounded-lg border border-amber-400/30 transition">
+                    <i class="fa-solid fa-pen-to-square"></i> Logo
+                </button>
+                <input type="file" id="logoFileInput" accept="image/*" class="hidden" onchange="handleLogoUpload(event)">
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <!-- Printed Invitation Card Modal Trigger -->
+                <button onclick="openPrintedModal()" class="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 px-3 py-1.5 rounded-full text-xs font-bold shadow-md transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-image"></i>
+                    <span>View Printed Card</span>
+                </button>
+                <button onclick="toggleMusic()" id="musicToggleBtn" class="flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 px-3 py-1.5 rounded-full text-xs font-semibold border border-amber-400/30 transition">
+                    <i class="fa-solid fa-volume-xmark" id="musicIcon"></i>
+                    <span id="musicText" class="hidden sm:inline">Music: OFF</span>
+                </button>
+                <a href="#rsvp" class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white px-4 py-1.5 rounded-full text-xs md:text-sm font-bold shadow-lg shadow-red-600/40 transition transform hover:scale-105">
+                    <i class="fa-solid fa-gift mr-1"></i> RSVP
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Header Section -->
+    <header class="relative pt-12 pb-20 px-4 overflow-hidden">
+        <div class="absolute inset-0 bg-cover bg-center opacity-25 z-0" style="background-image: url('https://placehold.co/1920x1080/0f172a/ffffff?text=Festive+Elijosh+Resort');"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-deepNight/90 via-poolBlue/70 to-deepNight z-0"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <!-- Organizer Pill -->
+            <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 mb-6 shadow-xl animate-float">
+                <span class="w-2.5 h-2.5 rounded-full bg-green-400 animate-ping"></span>
+                <span class="text-xs md:text-sm font-semibold uppercase tracking-widest text-amber-300">CEREHE Engineering Works Annual Holiday Celebration</span>
+            </div>
+
+            <!-- Main Titles -->
+            <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-widest text-amber-400 mb-2 drop-shadow-md">
+                Magical Holiday Gathering
+            </h2>
+            <h1 class="text-5xl sm:text-7xl md:text-8xl font-extrabold font-festive text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-amber-300 to-green-400 drop-shadow-[0_5px_15px_rgba(212,36,38,0.5)] mb-4">
+                Cosplay Christmas Party
+            </h1>
+
+            <p class="text-base sm:text-xl text-slate-200 max-w-2xl mx-auto mb-8 font-light">
+                Gear up in your favorite holiday character costume! Join us for an enchanting evening filled with joy, festive food, and exciting surprises.
+            </p>
+
+            <!-- Quick Event Details Badges -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto mb-10">
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-l-red-500 flex items-center space-x-3 text-left">
+                    <div class="bg-red-500/20 p-3 rounded-xl text-red-400 text-xl">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase font-semibold">Date</div>
+                        <div class="text-sm font-bold text-white">December 19, 2026</div>
+                        <div class="text-xs text-amber-300 font-medium">Saturday • 3:00 PM</div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-l-amber-400 flex items-center space-x-3 text-left">
+                    <div class="bg-amber-400/20 p-3 rounded-xl text-amber-400 text-xl">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase font-semibold">Venue</div>
+                        <div class="text-sm font-bold text-white">Elijosh Resort</div>
+                        <div class="text-xs text-amber-300 font-medium">& Events Place</div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-l-green-500 flex items-center space-x-3 text-left">
+                    <div class="bg-green-500/20 p-3 rounded-xl text-green-400 text-xl">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase font-semibold">Contest</div>
+                        <div class="text-sm font-bold text-white">Best Cosplay Prize</div>
+                        <div class="text-xs text-green-300 font-medium">Special Holiday Awards</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#rsvp" class="bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-bold px-8 py-3.5 rounded-2xl shadow-xl shadow-red-900/50 transition transform hover:-translate-y-1 flex items-center space-x-3 text-base">
+                    <i class="fa-solid fa-ticket"></i>
+                    <span>Confirm Attendance (RSVP)</span>
+                </a>
+                <button onclick="openPrintedModal()" class="glass-card hover:bg-slate-800/80 text-amber-300 font-semibold px-6 py-3.5 rounded-2xl border border-amber-400/30 transition flex items-center space-x-2">
+                    <i class="fa-solid fa-image"></i>
+                    <span>View Printed Invitation</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Countdown Timer Section -->
+    <section class="py-12 px-4 bg-slate-900/70 border-y border-white/10 relative">
+        <div class="max-w-4xl mx-auto text-center">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">Counting Down To The Magic</h3>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-8">The Party Begins In:</h2>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
+                <div class="glass-card p-6 rounded-2xl border-t-2 border-t-red-500 shadow-xl">
+                    <div id="days" class="text-4xl md:text-5xl font-black text-red-400 font-fun">00</div>
+                    <div class="text-xs uppercase tracking-wider text-slate-400 mt-2 font-semibold">Days</div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl border-t-2 border-t-amber-400 shadow-xl">
+                    <div id="hours" class="text-4xl md:text-5xl font-black text-amber-400 font-fun">00</div>
+                    <div class="text-xs uppercase tracking-wider text-slate-400 mt-2 font-semibold">Hours</div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl border-t-2 border-t-green-400 shadow-xl">
+                    <div id="minutes" class="text-4xl md:text-5xl font-black text-green-400 font-fun">00</div>
+                    <div class="text-xs uppercase tracking-wider text-slate-400 mt-2 font-semibold">Minutes</div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl border-t-2 border-t-blue-400 shadow-xl">
+                    <div id="seconds" class="text-4xl md:text-5xl font-black text-blue-400 font-fun">00</div>
+                    <div class="text-xs uppercase tracking-wider text-slate-400 mt-2 font-semibold">Seconds</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Costume Reminder Section (Streamlined without Vibes or Santa Hats info) -->
+    <section class="py-16 px-4 max-w-5xl mx-auto text-center">
+        <div class="glass-card p-8 md:p-12 rounded-3xl border border-amber-400/30 shadow-2xl relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-red-600/20 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-green-600/20 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div class="inline-block bg-amber-400/10 text-amber-300 text-xs font-bold px-3 py-1 rounded-full uppercase mb-3 border border-amber-400/20">
+                🌟 Costume Notice 🌟
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Cosplay As Your Favorite Character And Win A Special Prize!</h2>
+            <p class="text-slate-300 max-w-2xl mx-auto text-base mb-6">
+                Dress up as your favorite hero, anime icon, or legendary character. Compete in our holiday contest for wonderful prizes!
+            </p>
+            <div class="inline-flex items-center space-x-2 text-xs font-semibold text-slate-400 bg-slate-800/80 px-4 py-2 rounded-xl border border-white/10">
+                <i class="fa-solid fa-circle-info text-amber-400"></i>
+                <span>Note: Santa hats are not provided. Please bring your own costume accessories!</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Venue Slideshow Section -->
+    <section class="py-16 px-4 max-w-5xl mx-auto">
+        <div class="text-center mb-10">
+            <div class="inline-block bg-green-500/10 text-green-400 text-xs font-bold px-3 py-1 rounded-full uppercase mb-2 border border-green-500/20">
+                Venue Spotlight
+            </div>
+            <h2 class="text-3xl font-extrabold text-white">Elijosh Resort & Events Place</h2>
+            <p class="text-slate-300 text-sm mt-1">Explore our breathtaking holiday party destination</p>
+        </div>
+
+        <!-- Slideshow Container -->
+        <div class="glass-card rounded-3xl overflow-hidden shadow-2xl border border-white/15 relative">
+            <div class="relative h-80 sm:h-96 w-full bg-slate-900 overflow-hidden">
+                <!-- Slide 1 -->
+                <div class="venue-slide absolute inset-0 transition-opacity duration-700 opacity-100 flex items-center justify-center">
+                    <img src="https://placehold.co/1200x800/1c2541/ffffff?text=Elijosh+Resort+Poolside+Night+View" alt="Poolside View" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
+                        <div>
+                            <span class="bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Slide 1 of 4</span>
+                            <h4 class="text-white font-bold text-xl mt-1">Poolside Holiday Illumination</h4>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="venue-slide absolute inset-0 transition-opacity duration-700 opacity-0 flex items-center justify-center">
+                    <img src="https://placehold.co/1200x800/0f172a/ffffff?text=Resort+Grounds+and+Christmas+Lights" alt="Resort Grounds" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
+                        <div>
+                            <span class="bg-amber-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Slide 2 of 4</span>
+                            <h4 class="text-white font-bold text-xl mt-1">Festive Grounds & Decorations</h4>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="venue-slide absolute inset-0 transition-opacity duration-700 opacity-0 flex items-center justify-center">
+                    <img src="https://placehold.co/1200x800/165b33/ffffff?text=Main+Function+Hall+Setup" alt="Function Hall" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
+                        <div>
+                            <span class="bg-green-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Slide 3 of 4</span>
+                            <h4 class="text-white font-bold text-xl mt-1">Main Function Hall & Dining Area</h4>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 4 -->
+                <div class="venue-slide absolute inset-0 transition-opacity duration-700 opacity-0 flex items-center justify-center">
+                    <img src="https://placehold.co/1200x800/7f1d1d/ffffff?text=Resort+Entrance+at+Sunset" alt="Resort Entrance" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
+                        <div>
+                            <span class="bg-blue-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Slide 4 of 4</span>
+                            <h4 class="text-white font-bold text-xl mt-1">Resort Entrance & Parking</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Arrows -->
+                <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur transition shadow-lg">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur transition shadow-lg">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <!-- Dot Indicators -->
+            <div class="p-4 bg-slate-900/90 flex justify-center items-center space-x-3">
+                <button onclick="currentSlide(0)" class="slide-dot w-3 h-3 rounded-full bg-amber-400 transition"></button>
+                <button onclick="currentSlide(1)" class="slide-dot w-3 h-3 rounded-full bg-slate-600 transition"></button>
+                <button onclick="currentSlide(2)" class="slide-dot w-3 h-3 rounded-full bg-slate-600 transition"></button>
+                <button onclick="currentSlide(3)" class="slide-dot w-3 h-3 rounded-full bg-slate-600 transition"></button>
+                <span class="text-xs text-slate-400 ml-4"><a href="https://maps.google.com/?q=Elijosh+Resort+and+Events+Place" target="_blank" class="text-amber-300 underline font-medium">Open in Google Maps</a></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- RSVP Section (Name, Attendance, Guest Count only - No costume question) -->
+    <section id="rsvp" class="py-16 px-4 bg-gradient-to-b from-deepNight via-slate-900 to-deepNight relative">
+        <div class="max-w-3xl mx-auto">
+            <div class="glass-card p-8 md:p-12 rounded-3xl shadow-2xl border border-red-500/30 relative overflow-hidden">
+                <div class="absolute -top-12 -right-12 w-40 h-40 bg-red-600/20 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="absolute -bottom-12 -left-12 w-40 h-40 bg-green-600/20 rounded-full blur-2xl pointer-events-none"></div>
+
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center space-x-2 text-red-400 text-xs font-bold uppercase tracking-widest bg-red-500/10 px-3 py-1 rounded-full mb-3 border border-red-500/25">
+                        <i class="fa-solid fa-envelope-open-text"></i>
+                        <span>Secure Your Spot</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-2">RSVP For The Party</h2>
+                    <p class="text-slate-300 text-sm">Please let us know if you'll be joining us on December 19, 2026!</p>
+                </div>
+
+                <!-- RSVP Form -->
+                <form id="rsvpForm" onsubmit="handleRSVP(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Your Full Name *</label>
+                            <input type="text" id="guestName" required placeholder="e.g. Engr. Juan Dela Cruz" class="w-full bg-slate-800/80 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Email Address *</label>
+                            <input type="email" id="guestEmail" required placeholder="juan@cerehe.com" class="w-full bg-slate-800/80 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition text-sm">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Will You Attend? *</label>
+                            <select id="guestAttendance" class="w-full bg-slate-800/80 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition text-sm">
+                                <option value="Yes, absolutely! 🎉">Yes, absolutely! 🎉</option>
+                                <option value="Maybe / Checking schedule ⏳">Maybe / Checking schedule ⏳</option>
+                                <option value="Regretfully, cannot make it 😢">Regretfully, cannot make it 😢</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Number of Attendees / Guests *</label>
+                            <select id="guestCountInput" class="w-full bg-slate-800/80 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition text-sm">
+                                <option value="1 Person (Just Me)">1 Person (Just Me)</option>
+                                <option value="2 People (+1 Guest)">2 People (+1 Guest)</option>
+                                <option value="3 People">3 People</option>
+                                <option value="4+ Family / Team">4+ Family / Team</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Message or Holiday Greetings (Optional)</label>
+                        <textarea id="guestMessage" rows="3" placeholder="Looking forward to an amazing celebration!" class="w-full bg-slate-800/80 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition text-sm"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-bold py-4 rounded-xl shadow-xl shadow-red-900/40 transition transform active:scale-95 text-base flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Submit RSVP & Join Guestlist</span>
+                    </button>
+                </form>
+
+                <!-- Success Alert Box (hidden by default) -->
+                <div id="rsvpSuccess" class="hidden mt-6 bg-green-500/20 border border-green-500/50 p-6 rounded-2xl text-center animate-fadeIn">
+                    <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-3 text-xl shadow-lg">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-white mb-1">RSVP Recorded Successfully!</h3>
+                    <p class="text-xs text-green-200 mb-4">See you at Elijosh Resort on December 19, 2026!</p>
+                    <button onclick="resetRSVPForm()" class="bg-slate-800 text-amber-300 text-xs font-semibold px-4 py-2 rounded-lg border border-amber-400/30 hover:bg-slate-700">Submit Another RSVP</button>
+                </div>
+
+                <!-- Live Guest Counter & List Preview -->
+                <div class="mt-12 pt-8 border-t border-white/10">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-sm font-bold uppercase tracking-wider text-amber-300 flex items-center space-x-2">
+                            <i class="fa-solid fa-users"></i>
+                            <span>Confirmed Guests (<span id="totalGuestCount">4</span>)</span>
+                        </h4>
+                        <span class="text-xs text-slate-400">Live Guestbook</span>
+                    </div>
+                    <div id="guestListContainer" class="space-y-2 max-h-48 overflow-y-auto pr-2">
+                        <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs">
+                            <div>
+                                <span class="font-bold text-white">Engr. Alex Santos</span>
+                                <span class="text-slate-400 block">Party Size: 1 Person</span>
+                            </div>
+                            <span class="bg-green-500/20 text-green-300 px-2.5 py-1 rounded-md font-medium">Attending 🎉</span>
+                        </div>
+                        <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs">
+                            <div>
+                                <span class="font-bold text-white">Maria Reyes</span>
+                                <span class="text-slate-400 block">Party Size: 2 People (+1 Guest)</span>
+                            </div>
+                            <span class="bg-green-500/20 text-green-300 px-2.5 py-1 rounded-md font-medium">Attending 🎉</span>
+                        </div>
+                        <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs">
+                            <div>
+                                <span class="font-bold text-white">Mark Joseph</span>
+                                <span class="text-slate-400 block">Party Size: 1 Person</span>
+                            </div>
+                            <span class="bg-green-500/20 text-green-300 px-2.5 py-1 rounded-md font-medium">Attending 🎉</span>
+                        </div>
+                        <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs">
+                            <div>
+                                <span class="font-bold text-white">Sarah Jenkins</span>
+                                <span class="text-slate-400 block">Party Size: 3 People</span>
+                            </div>
+                            <span class="bg-green-500/20 text-green-300 px-2.5 py-1 rounded-md font-medium">Attending 🎉</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vercel Deployment Guide Section -->
+    <section class="py-12 px-4 max-w-4xl mx-auto">
+        <div class="bg-slate-900/80 border border-amber-400/30 rounded-2xl p-6 md:p-8 shadow-xl">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="bg-amber-400/20 p-3 rounded-xl text-amber-400 text-xl">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-white">Host This App on Vercel for FREE</h3>
+                    <p class="text-xs text-slate-300">Deploy this exact invitation website in under 2 minutes!</p>
+                </div>
+            </div>
+            
+            <ol class="list-decimal list-inside space-y-2 text-xs md:text-sm text-slate-300 mb-6 bg-slate-800/60 p-4 rounded-xl border border-white/5">
+                <li>Save this single file as <code class="text-amber-300 font-mono">index.html</code> on your computer.</li>
+                <li>Create a free repository on <strong class="text-white">GitHub</strong> and upload <code class="text-amber-300 font-mono">index.html</code>.</li>
+                <li>Go to <a href="https://vercel.com" target="_blank" class="text-amber-400 underline font-medium">Vercel.com</a>, log in with GitHub, and click <strong class="text-white">New Project</strong>.</li>
+                <li>Import your repository and click <strong class="text-white">Deploy</strong> without changing any settings!</li>
+                <li>Share your custom Vercel link with all CEREHE Engineering Works colleagues! 🎉</li>
+            </ol>
+
+            <div class="flex flex-wrap gap-3">
+                <button onclick="downloadCode()" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs flex items-center space-x-2 transition shadow">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Download index.html</span>
+                </button>
+                <button onclick="shareApp()" class="bg-slate-800 hover:bg-slate-700 text-amber-300 font-semibold px-4 py-2.5 rounded-xl text-xs border border-amber-400/30 flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <span>Copy Invitation Link</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 px-4 text-center border-t border-white/10 text-xs text-slate-400 bg-deepNight">
+        <div class="max-w-7xl mx-auto space-y-3">
+            <div class="font-bold text-sm text-white tracking-wider">CEREHE ENGINEERING WORKS</div>
+            <p>© 2026 Cosplay Christmas Party. All rights reserved. Designed for the ultimate festive holiday celebration.</p>
+        </div>
+    </footer>
+
+    <!-- Printed Invitation Card Modal -->
+    <div id="printedCardModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-amber-400/40 rounded-3xl max-w-2xl w-full p-6 relative shadow-2xl animate-fadeIn">
+            <button onclick="closePrintedModal()" class="absolute top-4 right-4 bg-slate-800 hover:bg-red-600 text-white w-9 h-9 rounded-full flex items-center justify-center transition shadow">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="text-center mb-4">
+                <span class="text-xs uppercase font-bold tracking-widest text-amber-400">Official Poster</span>
+                <h3 class="text-2xl font-extrabold text-white">Printed Invitation Card</h3>
+            </div>
+            <!-- Image preview matching user uploaded card -->
+            <div class="rounded-2xl overflow-hidden border-2 border-amber-400/50 bg-slate-800 max-h-[70vh] flex items-center justify-center">
+                <img src="https://placehold.co/800x1100/165b33/ffffff?text=CEREHE+Cosplay+Christmas+Party+Card" alt="Printed Card" class="w-full h-auto object-contain max-h-[65vh]" onerror="this.src='https://placehold.co/800x1100/165b33/ffffff?text=Cosplay+Christmas+Card'">
+            </div>
+            <div class="mt-4 text-center">
+                <button onclick="closePrintedModal()" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-xs">
+                    Close Preview
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // 1. Envelope Opening Animation
+        function openEnvelope() {
+            const box = document.getElementById('envelopeBox');
+            box.classList.add('envelope-open');
+            
+            setTimeout(() => {
+                const overlay = document.getElementById('envelopeOverlay');
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.remove();
+                }, 800);
+            }, 1000);
+        }
+
+        // 2. Snowfall Animation on Canvas
+        const canvas = document.getElementById('snowCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const snowflakes = [];
+        const numSnowflakes = 85;
+
+        for (let i = 0; i < numSnowflakes; i++) {
+            snowflakes.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 3 + 1,
+                speed: Math.random() * 1.2 + 0.4,
+                wind: Math.random() * 0.8 - 0.4,
+                opacity: Math.random() * 0.8 + 0.2
+            });
+        }
+
+        function drawSnow() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let flake of snowflakes) {
+                ctx.fillStyle = `rgba(255, 255, 255, ${flake.opacity})`;
+                ctx.beginPath();
+                ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                flake.y += flake.speed;
+                flake.x += flake.wind;
+
+                if (flake.y > canvas.height) {
+                    flake.y = 0;
+                    flake.x = Math.random() * canvas.width;
+                }
+                if (flake.x > canvas.width) {
+                    flake.x = 0;
+                } else if (flake.x < 0) {
+                    flake.x = canvas.width;
+                }
+            }
+            requestAnimationFrame(drawSnow);
+        }
+        drawSnow();
+
+        // 3. Countdown Timer Logic to December 19, 2026 15:00:00
+        const eventDate = new Date('December 19, 2026 15:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            if (distance < 0) {
+                document.getElementById('days').innerText = '00';
+                document.getElementById('hours').innerText = '00';
+                document.getElementById('minutes').innerText = '00';
+                document.getElementById('seconds').innerText = '00';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = String(days).padStart(2, '0');
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // 4. Venue Slideshow Logic
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.venue-slide');
+        const dots = document.querySelectorAll('.slide-dot');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.style.opacity = i === index ? '1' : '0';
+            });
+            dots.forEach((dot, i) => {
+                dot.className = `slide-dot w-3 h-3 rounded-full transition ${i === index ? 'bg-amber-400 scale-125' : 'bg-slate-600'}`;
+            });
+        }
+
+        function nextSlide() {
+            currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+            showSlide(currentSlideIndex);
+        }
+
+        function prevSlide() {
+            currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+            showSlide(currentSlideIndex);
+        }
+
+        function currentSlide(index) {
+            currentSlideIndex = index;
+            showSlide(currentSlideIndex);
+        }
+
+        // Auto advance slides every 5 seconds
+        setInterval(nextSlide, 5000);
+
+        // 5. Company Logo Upload
+        function triggerLogoUpload() {
+            document.getElementById('logoFileInput').click();
+        }
+
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('companyLogoImg');
+                    const text = document.getElementById('companyLogoText');
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                    text.classList.add('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 6. Printed Card Modal
+        function openPrintedModal() {
+            document.getElementById('printedCardModal').classList.remove('hidden');
+        }
+
+        function closePrintedModal() {
+            document.getElementById('printedCardModal').classList.add('hidden');
+        }
+
+        // 7. Audio Toggle
+        let isPlaying = false;
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggleBtn = document.getElementById('musicToggleBtn');
+        const musicIcon = document.getElementById('musicIcon');
+        const musicText = document.getElementById('musicText');
+
+        function toggleMusic() {
+            if (isPlaying) {
+                bgMusic.pause();
+                isPlaying = false;
+                musicIcon.className = 'fa-solid fa-volume-xmark';
+                musicText.innerText = 'Music: OFF';
+                musicToggleBtn.classList.remove('border-green-400', 'text-green-300');
+            } else {
+                bgMusic.play().then(() => {
+                    isPlaying = true;
+                    musicIcon.className = 'fa-solid fa-volume-high';
+                    musicText.innerText = 'Music: ON';
+                    musicToggleBtn.classList.add('border-green-400', 'text-green-300');
+                }).catch(e => {
+                    console.log('Audio autoplay blocked or unavailable', e);
+                });
+            }
+        }
+
+        // 8. RSVP Form Handler & Guestlist State
+        let guests = [
+            { name: "Engr. Alex Santos", partySize: "1 Person", status: "Attending 🎉" },
+            { name: "Maria Reyes", partySize: "2 People (+1 Guest)", status: "Attending 🎉" },
+            { name: "Mark Joseph", partySize: "1 Person", status: "Attending 🎉" },
+            { name: "Sarah Jenkins", partySize: "3 People", status: "Attending 🎉" }
+        ];
+
+        function renderGuests() {
+            const container = document.getElementById('guestListContainer');
+            document.getElementById('totalGuestCount').innerText = guests.length;
+            container.innerHTML = guests.map(g => `
+                <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs animate-fadeIn">
+                    <div>
+                        <span class="font-bold text-white">${escapeHtml(g.name)}</span>
+                        <span class="text-slate-400 block">Party Size: ${escapeHtml(g.partySize)}</span>
+                    </div>
+                    <span class="bg-green-500/20 text-green-300 px-2.5 py-1 rounded-md font-medium">${escapeHtml(g.status)}</span>
+                </div>
+            `).join('');
+        }
+
+        function handleRSVP(event) {
+            event.preventDefault();
+            const name = document.getElementById('guestName').value;
+            const partySize = document.getElementById('guestCountInput').value;
+            const attendance = document.getElementById('guestAttendance').value;
+
+            guests.unshift({
+                name: name,
+                partySize: partySize,
+                status: attendance
+            });
+
+            renderGuests();
+
+            document.getElementById('rsvpForm').classList.add('hidden');
+            document.getElementById('rsvpSuccess').classList.remove('hidden');
+        }
+
+        function resetRSVPForm() {
+            document.getElementById('rsvpForm').reset();
+            document.getElementById('rsvpForm').classList.remove('hidden');
+            document.getElementById('rsvpSuccess').classList.add('hidden');
+        }
+
+        function escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // 9. Download and Share helpers
+        function downloadCode() {
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function shareApp() {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alertBox("Invitation link copied to clipboard! Ready to share on Vercel.");
+                });
+            } else {
+                alertBox("URL: " + window.location.href);
+            }
+        }
+
+        function alertBox(msg) {
+            const div = document.createElement('div');
+            div.className = 'fixed bottom-5 right-5 z-50 bg-slate-900 border border-amber-400 text-white px-6 py-3 rounded-xl shadow-2xl text-xs font-semibold animate-bounce';
+            div.innerHTML = `<i class="fa-solid fa-bell text-amber-400 mr-2"></i> ${msg}`;
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 4000);
+        }
+    </script>
+</body>
+</html>
