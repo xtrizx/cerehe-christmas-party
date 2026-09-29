@@ -185,23 +185,10 @@
     <nav class="sticky top-0 z-40 glass-card border-b border-white/10 px-4 py-3">
         <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center">
             <div class="flex items-center space-x-3">
-                <!-- Editable Logo Container -->
-                <div id="logoContainer" class="flex items-center space-x-2 bg-gradient-to-r from-red-600 to-amber-500 text-white font-black px-3 py-1.5 rounded-xl text-sm md:text-base shadow-lg shadow-red-900/30">
-                    <img id="companyLogoImg" src="" alt="Company Logo" class="h-6 object-contain hidden" onerror="this.classList.add('hidden')">
-                    <span id="companyLogoText">CEREHE ENGINEERING</span>
-                </div>
-                <!-- Change Logo Button -->
-                <button onclick="triggerLogoUpload()" title="Upload Company Logo" class="text-xs text-amber-300 bg-slate-800 hover:bg-slate-700 px-2.5 py-1.5 rounded-lg border border-amber-400/30 transition">
-                    <i class="fa-solid fa-pen-to-square"></i> Upload Logo
-                </button>
-                <input type="file" id="logoFileInput" accept="image/*" class="hidden" onchange="handleLogoUpload(event)">
-            </div>
-            
-            <div class="flex items-center space-x-3">
-                <!-- Printed Invitation Card Modal Trigger & Uploader -->
+                <!-- Printed Invitation Card Modal Trigger -->
                 <button onclick="openPrintedModal()" class="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 px-3 py-1.5 rounded-full text-xs font-bold shadow-md transition flex items-center space-x-1.5">
                     <i class="fa-solid fa-image"></i>
-                    <span>View / Download Printed Card</span>
+                    <span>View Printed Card</span>
                 </button>
                 <button onclick="toggleMusic()" id="musicToggleBtn" class="flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 px-3 py-1.5 rounded-full text-xs font-semibold border border-amber-400/30 transition">
                     <i class="fa-solid fa-volume-xmark" id="musicIcon"></i>
@@ -216,14 +203,13 @@
 
     <!-- Hero Header Section -->
     <header class="relative pt-12 pb-20 px-4 overflow-hidden">
-        <div class="absolute inset-0 bg-cover bg-center opacity-25 z-0" style="background-image: url('https://placehold.co/1920x1080/0f172a/ffffff?text=Festive+Elijosh+Resort');"></div>
         <div class="absolute inset-0 bg-gradient-to-b from-deepNight/90 via-poolBlue/70 to-deepNight z-0"></div>
 
         <div class="max-w-5xl mx-auto text-center relative z-10">
             <!-- Organizer Pill -->
-            <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 mb-6 shadow-xl animate-float">
-                <span class="w-2.5 h-2.5 rounded-full bg-green-400 animate-ping"></span>
-                <span class="text-xs md:text-sm font-semibold uppercase tracking-widest text-amber-300">CEREHE Engineering Works Annual Holiday Celebration</span>
+            <div class="inline-flex items-center space-x-3 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-full border border-white/20 mb-6 shadow-xl animate-float">
+                <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/CEREHE-Engineering-Works-Logo-2.png" alt="CEREHE Engineering Works Logo" class="h-8 max-w-[150px] object-contain">
+                <span class="text-xs md:text-sm font-semibold uppercase tracking-widest text-amber-300"></span>
             </div>
 
             <!-- Main Titles -->
@@ -315,7 +301,7 @@
         </div>
     </section>
 
-    <!-- Costume Reminder Section (Cleaned up: No Santa Hat mention) -->
+    <!-- Costume Reminder Section (Streamlined without Vibes or Santa Hats info) -->
     <section class="py-16 px-4 max-w-5xl mx-auto text-center">
         <div class="glass-card p-8 md:p-12 rounded-3xl border border-amber-400/30 shadow-2xl relative overflow-hidden">
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-red-600/20 rounded-full blur-2xl pointer-events-none"></div>
@@ -325,54 +311,97 @@
                 🌟 Costume Notice 🌟
             </div>
             <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Cosplay As Your Favorite Character And Win A Special Prize!</h2>
-            <p class="text-slate-300 max-w-2xl mx-auto text-base">
+            <p class="text-slate-300 max-w-2xl mx-auto text-base mb-6">
                 Dress up as your favorite hero, anime icon, or legendary character. Compete in our holiday contest for wonderful prizes!
             </p>
         </div>
     </section>
 
-    <!-- Venue Slideshow Section (Supports up to 5 venue photos) -->
+    <!-- Venue Slideshow Section -->
     <section class="py-16 px-4 max-w-5xl mx-auto">
-        <div class="text-center mb-10 flex flex-col items-center">
+        <div class="text-center mb-10">
             <div class="inline-block bg-green-500/10 text-green-400 text-xs font-bold px-3 py-1 rounded-full uppercase mb-2 border border-green-500/20">
                 Venue Spotlight
             </div>
             <h2 class="text-3xl font-extrabold text-white">Elijosh Resort & Events Place</h2>
             <p class="text-slate-300 text-sm mt-1">Explore our breathtaking holiday party destination</p>
-            
-            <!-- Upload Venue Photos Button -->
-            <button onclick="triggerVenueUpload()" class="mt-4 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-400/40 text-xs font-bold px-4 py-2 rounded-xl transition flex items-center space-x-2 shadow">
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-                <span>Upload Venue Photos (Up to 5)</span>
-            </button>
-            <input type="file" id="venueFileInput" accept="image/*" multiple class="hidden" onchange="handleVenueUpload(event)">
         </div>
 
         <!-- Slideshow Container -->
         <div class="glass-card rounded-3xl overflow-hidden shadow-2xl border border-white/15 relative">
-            <div class="relative h-80 sm:h-96 w-full bg-slate-900 overflow-hidden" id="venueSlidesWrapper">
-                <!-- Slides will be dynamically injected here -->
+            <div class="relative aspect-[4/3] w-full bg-slate-900 overflow-hidden">
+                <!-- Slide 1 -->
+                <div class="venue-slide absolute inset-0 transition-opacity duration-700 opacity-100 flex items-center justify-center">
+                    <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/Elijosh-Resort-5.png" alt="Elijosh Resort View 1" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
+                        <div>
+                            <span class="bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Slide 1 of 5</span>
+                            <h4 class="text-white font-bold text-xl mt-1">Elijosh Resort</h4>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="venue-slide absolute inset-0 transition-opacity duration-700 opacity-0 flex items-center justify-center">
+                    <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/Elijosh-Resort-4.png" alt="Elijosh Resort View 2" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
+                        <div>
+                            <span class="bg-amber-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Slide 2 of 5</span>
+                            <h4 class="text-white font-bold text-xl mt-1">Elijosh Resort</h4>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="venue-slide absolute inset-0 transition-opacity duration-700 opacity-0 flex items-center justify-center">
+                    <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/Elijosh-Resort-3.png" alt="Elijosh Resort View 3" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
+                        <div>
+                            <span class="bg-green-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Slide 3 of 5</span>
+                            <h4 class="text-white font-bold text-xl mt-1">Elijosh Resort</h4>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 4 -->
+                <div class="venue-slide absolute inset-0 transition-opacity duration-700 opacity-0 flex items-center justify-center">
+                    <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/Elijosh-Resort-2.png" alt="Elijosh Resort View 4" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
+                        <div>
+                            <span class="bg-blue-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Slide 4 of 5</span>
+                            <h4 class="text-white font-bold text-xl mt-1">Elijosh Resort</h4>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 5 -->
+                <div class="venue-slide absolute inset-0 transition-opacity duration-700 opacity-0 flex items-center justify-center">
+                    <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/Elijosh-Resort-1.png" alt="Elijosh Resort View 5" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
+                        <div>
+                            <span class="bg-purple-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Slide 5 of 5</span>
+                            <h4 class="text-white font-bold text-xl mt-1">Elijosh Resort</h4>
+                        </div>
+                    </div>
+                </div>
+                <!-- Navigation Arrows -->
+                <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur transition shadow-lg">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur transition shadow-lg">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
             </div>
 
-            <!-- Navigation Arrows -->
-            <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur transition shadow-lg z-20">
-                <i class="fa-solid fa-chevron-left"></i>
-            </button>
-            <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur transition shadow-lg z-20">
-                <i class="fa-solid fa-chevron-right"></i>
-            </button>
-
-            <!-- Dot Indicators & Google Maps -->
-            <div class="p-4 bg-slate-900/90 flex flex-wrap justify-between items-center">
-                <div id="slideDotsContainer" class="flex items-center space-x-2">
-                    <!-- Dots injected dynamically -->
-                </div>
-                <span class="text-xs text-slate-400"><a href="https://maps.google.com/?q=Elijosh+Resort+and+Events+Place" target="_blank" class="text-amber-300 underline font-medium">Open in Google Maps</a></span>
+            <!-- Dot Indicators -->
+            <div class="p-4 bg-slate-900/90 flex justify-center items-center space-x-3">
+                <button onclick="currentSlide(0)" class="slide-dot w-3 h-3 rounded-full bg-amber-400 transition"></button>
+                <button onclick="currentSlide(1)" class="slide-dot w-3 h-3 rounded-full bg-slate-600 transition"></button>
+                <button onclick="currentSlide(2)" class="slide-dot w-3 h-3 rounded-full bg-slate-600 transition"></button>
+                <button onclick="currentSlide(3)" class="slide-dot w-3 h-3 rounded-full bg-slate-600 transition"></button>
+                <button onclick="currentSlide(4)" class="slide-dot w-3 h-3 rounded-full bg-slate-600 transition"></button>
+                <span class="text-xs text-slate-400 ml-4"><a href="https://maps.google.com/?q=Elijosh+Resort+and+Events+Place" target="_blank" class="text-amber-300 underline font-medium">Open in Google Maps</a></span>
             </div>
         </div>
     </section>
 
-    <!-- RSVP Section (Simplified: Name, Number/Phone, Will you attend) -->
+    <!-- RSVP Section (Name and Attendance - No guest count or costume question) -->
     <section id="rsvp" class="py-16 px-4 bg-gradient-to-b from-deepNight via-slate-900 to-deepNight relative">
         <div class="max-w-3xl mx-auto">
             <div class="glass-card p-8 md:p-12 rounded-3xl shadow-2xl border border-red-500/30 relative overflow-hidden">
@@ -392,26 +421,30 @@
                 <form id="rsvpForm" onsubmit="handleRSVP(event)" class="space-y-6">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Your Name *</label>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Your Full Name *</label>
                             <input type="text" id="guestName" required placeholder="e.g. Engr. Juan Dela Cruz" class="w-full bg-slate-800/80 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition text-sm">
                         </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Contact Number *</label>
-                            <input type="tel" id="guestPhone" required placeholder="09123456789" class="w-full bg-slate-800/80 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition text-sm">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Will You Attend? *</label>
+                            <select id="guestAttendance" class="w-full bg-slate-800/80 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition text-sm">
+                                <option value="Yes, absolutely! 🎉">Yes, absolutely! 🎉</option>
+                                <option value="Maybe / Checking schedule ⏳">Maybe / Checking schedule ⏳</option>
+                                <option value="Regretfully, cannot make it 😢">Regretfully, cannot make it 😢</option>
+                            </select>
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Will You Attend? *</label>
-                        <select id="guestAttendance" class="w-full bg-slate-800/80 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition text-sm">
-                            <option value="Yes, I will be there! 🎉">Yes, I will be there! 🎉</option>
-                            <option value="Regretfully, cannot make it 😢">Regretfully, cannot make it 😢</option>
-                        </select>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Message or Holiday Greetings (Optional)</label>
+                        <textarea id="guestMessage" rows="3" placeholder="Looking forward to an amazing celebration!" class="w-full bg-slate-800/80 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition text-sm"></textarea>
                     </div>
 
                     <button type="submit" class="w-full bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-bold py-4 rounded-xl shadow-xl shadow-red-900/40 transition transform active:scale-95 text-base flex items-center justify-center space-x-2">
                         <i class="fa-solid fa-paper-plane"></i>
-                        <span>Submit RSVP</span>
+                        <span>Submit RSVP & Join Guestlist</span>
                     </button>
                 </form>
 
@@ -438,53 +471,29 @@
                         <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs">
                             <div>
                                 <span class="font-bold text-white">Engr. Alex Santos</span>
-                                <span class="text-slate-400 block">Contact: 09171234567</span>
                             </div>
                             <span class="bg-green-500/20 text-green-300 px-2.5 py-1 rounded-md font-medium">Attending 🎉</span>
                         </div>
                         <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs">
                             <div>
                                 <span class="font-bold text-white">Maria Reyes</span>
-                                <span class="text-slate-400 block">Contact: 09189876543</span>
+                            </div>
+                            <span class="bg-green-500/20 text-green-300 px-2.5 py-1 rounded-md font-medium">Attending 🎉</span>
+                        </div>
+                        <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs">
+                            <div>
+                                <span class="font-bold text-white">Mark Joseph</span>
+                            </div>
+                            <span class="bg-green-500/20 text-green-300 px-2.5 py-1 rounded-md font-medium">Attending 🎉</span>
+                        </div>
+                        <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs">
+                            <div>
+                                <span class="font-bold text-white">Sarah Jenkins</span>
                             </div>
                             <span class="bg-green-500/20 text-green-300 px-2.5 py-1 rounded-md font-medium">Attending 🎉</span>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Vercel Deployment Guide Section -->
-    <section class="py-12 px-4 max-w-4xl mx-auto">
-        <div class="bg-slate-900/80 border border-amber-400/30 rounded-2xl p-6 md:p-8 shadow-xl">
-            <div class="flex items-center space-x-3 mb-4">
-                <div class="bg-amber-400/20 p-3 rounded-xl text-amber-400 text-xl">
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                </div>
-                <div>
-                    <h3 class="font-bold text-lg text-white">Host This App on Vercel for FREE</h3>
-                    <p class="text-xs text-slate-300">Deploy this exact invitation website in under 2 minutes!</p>
-                </div>
-            </div>
-            
-            <ol class="list-decimal list-inside space-y-2 text-xs md:text-sm text-slate-300 mb-6 bg-slate-800/60 p-4 rounded-xl border border-white/5">
-                <li>Save this single file as <code class="text-amber-300 font-mono">index.html</code> on your computer.</li>
-                <li>Create a free repository on <strong class="text-white">GitHub</strong> and upload <code class="text-amber-300 font-mono">index.html</code>.</li>
-                <li>Go to <a href="https://vercel.com" target="_blank" class="text-amber-400 underline font-medium">Vercel.com</a>, log in with GitHub, and click <strong class="text-white">New Project</strong>.</li>
-                <li>Import your repository and click <strong class="text-white">Deploy</strong> without changing any settings!</li>
-                <li>Share your custom Vercel link with all CEREHE Engineering Works colleagues! 🎉</li>
-            </ol>
-
-            <div class="flex flex-wrap gap-3">
-                <button onclick="downloadCode()" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs flex items-center space-x-2 transition shadow">
-                    <i class="fa-solid fa-download"></i>
-                    <span>Download index.html</span>
-                </button>
-                <button onclick="shareApp()" class="bg-slate-800 hover:bg-slate-700 text-amber-300 font-semibold px-4 py-2.5 rounded-xl text-xs border border-amber-400/30 flex items-center space-x-2 transition">
-                    <i class="fa-solid fa-share-nodes"></i>
-                    <span>Copy Invitation Link</span>
-                </button>
             </div>
         </div>
     </section>
@@ -497,7 +506,7 @@
         </div>
     </footer>
 
-    <!-- Printed Invitation Card Modal (View and Download) -->
+    <!-- Printed Invitation Card Modal -->
     <div id="printedCardModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-amber-400/40 rounded-3xl max-w-2xl w-full p-6 relative shadow-2xl animate-fadeIn">
             <button onclick="closePrintedModal()" class="absolute top-4 right-4 bg-slate-800 hover:bg-red-600 text-white w-9 h-9 rounded-full flex items-center justify-center transition shadow">
@@ -507,25 +516,11 @@
                 <span class="text-xs uppercase font-bold tracking-widest text-amber-400">Official Poster</span>
                 <h3 class="text-2xl font-extrabold text-white">Printed Invitation Card</h3>
             </div>
-
-            <!-- Upload Custom Printed Card -->
-            <div class="mb-4 text-center">
-                <button onclick="document.getElementById('printedCardInput').click()" class="bg-slate-800 text-amber-300 hover:bg-slate-700 border border-amber-400/30 text-xs font-semibold px-4 py-2 rounded-xl transition">
-                    <i class="fa-solid fa-upload mr-1"></i> Upload Printed Invitation Image
-                </button>
-                <input type="file" id="printedCardInput" accept="image/*" class="hidden" onchange="handlePrintedCardUpload(event)">
+            <!-- Image preview matching user uploaded card -->
+            <div class="rounded-2xl overflow-hidden border-2 border-amber-400/50 bg-slate-800 max-h-[70vh] flex items-center justify-center">
+                <img src="https://dev.cerehe.ph/wp-content/uploads/2026/09/CEREHE-Cosplay-Christmas-Invitation-2026.png" alt="Printed Card" class="w-full h-auto object-contain max-h-[65vh]">
             </div>
-
-            <!-- Image preview -->
-            <div class="rounded-2xl overflow-hidden border-2 border-amber-400/50 bg-slate-800 max-h-[60vh] flex items-center justify-center">
-                <img id="printedCardImg" src="https://placehold.co/800x1100/165b33/ffffff?text=CEREHE+Cosplay+Christmas+Party+Card" alt="Printed Card" class="w-full h-auto object-contain max-h-[55vh]">
-            </div>
-
-            <div class="mt-6 flex justify-center space-x-3">
-                <a id="downloadCardBtn" href="#" download="CEREHE-Invitation-Card.jpg" class="hidden bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs flex items-center space-x-2">
-                    <i class="fa-solid fa-download"></i>
-                    <span>Download Card</span>
-                </a>
+            <div class="mt-4 text-center">
                 <button onclick="closePrintedModal()" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-xs">
                     Close Preview
                 </button>
@@ -627,126 +622,45 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // 4. Venue Slideshow Logic (Supports up to 5 photos)
-        let venueSlides = [
-            { url: "https://placehold.co/1200x800/1c2541/ffffff?text=Elijosh+Resort+Poolside+Night+View", title: "Poolside Holiday Illumination" },
-            { url: "https://placehold.co/1200x800/0f172a/ffffff?text=Resort+Grounds+and+Christmas+Lights", title: "Festive Grounds & Decorations" },
-            { url: "https://placehold.co/1200x800/165b33/ffffff?text=Main+Function+Hall+Setup", title: "Main Function Hall & Dining Area" },
-            { url: "https://placehold.co/1200x800/7f1d1d/ffffff?text=Resort+Entrance+at+Sunset", title: "Resort Entrance & Parking" },
-            { url: "https://placehold.co/1200x800/ffb703/07101f?text=Special+Party+Area+Setup", title: "Special Celebration Setup" }
-        ];
+        // 4. Venue Slideshow Logic
         let currentSlideIndex = 0;
-
-        function renderVenueSlideshow() {
-            const wrapper = document.getElementById('venueSlidesWrapper');
-            const dotsContainer = document.getElementById('slideDotsContainer');
-
-            wrapper.innerHTML = venueSlides.map((slide, i) => `
-                <div class="venue-slide absolute inset-0 transition-opacity duration-700 ${i === currentSlideIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'} flex items-center justify-center">
-                    <img src="${slide.url}" alt="Venue photo ${i+1}" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
-                        <div>
-                            <span class="bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Slide ${i + 1} of ${venueSlides.length}</span>
-                            <h4 class="text-white font-bold text-xl mt-1">${slide.title}</h4>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
-            dotsContainer.innerHTML = venueSlides.map((_, i) => `
-                <button onclick="currentSlide(${i})" class="w-3 h-3 rounded-full transition ${i === currentSlideIndex ? 'bg-amber-400 scale-125' : 'bg-slate-600'}"></button>
-            `).join('');
-        }
+        const slides = document.querySelectorAll('.venue-slide');
+        const dots = document.querySelectorAll('.slide-dot');
 
         function showSlide(index) {
-            currentSlideIndex = index;
-            renderVenueSlideshow();
+            slides.forEach((slide, i) => {
+                slide.style.opacity = i === index ? '1' : '0';
+            });
+            dots.forEach((dot, i) => {
+                dot.className = `slide-dot w-3 h-3 rounded-full transition ${i === index ? 'bg-amber-400 scale-125' : 'bg-slate-600'}`;
+            });
         }
 
         function nextSlide() {
-            currentSlideIndex = (currentSlideIndex + 1) % venueSlides.length;
-            renderVenueSlideshow();
+            currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+            showSlide(currentSlideIndex);
         }
 
         function prevSlide() {
-            currentSlideIndex = (currentSlideIndex - 1 + venueSlides.length) % venueSlides.length;
-            renderVenueSlideshow();
+            currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+            showSlide(currentSlideIndex);
         }
 
         function currentSlide(index) {
             currentSlideIndex = index;
-            renderVenueSlideshow();
+            showSlide(currentSlideIndex);
         }
 
-        renderVenueSlideshow();
+        // Auto advance slides every 5 seconds
         setInterval(nextSlide, 5000);
 
-        // Handler to upload up to 5 venue photos
-        function triggerVenueUpload() {
-            document.getElementById('venueFileInput').click();
-        }
-
-        function handleVenueUpload(event) {
-            const files = event.target.files;
-            if (files && files.length > 0) {
-                venueSlides = []; // Reset or append
-                const limit = Math.min(files.length, 5);
-                for (let i = 0; i < limit; i++) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        venueSlides.push({ url: e.target.result, title: `Uploaded Venue Photo ${i + 1}` });
-                        if (venueSlides.length === limit) {
-                            currentSlideIndex = 0;
-                            renderVenueSlideshow();
-                        }
-                    }
-                    reader.readAsDataURL(files[i]);
-                }
-            }
-        }
-
-        // 5. Company Logo Upload
-        function triggerLogoUpload() {
-            document.getElementById('logoFileInput').click();
-        }
-
-        function handleLogoUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.getElementById('companyLogoImg');
-                    const text = document.getElementById('companyLogoText');
-                    img.src = e.target.result;
-                    img.classList.remove('hidden');
-                    text.classList.add('hidden');
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        // 6. Printed Card Modal & Upload
+        // 6. Printed Card Modal
         function openPrintedModal() {
             document.getElementById('printedCardModal').classList.remove('hidden');
         }
 
         function closePrintedModal() {
             document.getElementById('printedCardModal').classList.add('hidden');
-        }
-
-        function handlePrintedCardUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.getElementById('printedCardImg');
-                    const downloadBtn = document.getElementById('downloadCardBtn');
-                    img.src = e.target.result;
-                    downloadBtn.href = e.target.result;
-                    downloadBtn.classList.remove('hidden');
-                }
-                reader.readAsDataURL(file);
-            }
         }
 
         // 7. Audio Toggle
@@ -775,10 +689,12 @@
             }
         }
 
-        // 8. Simplified RSVP Form Handler & Guestlist State
+        // 8. RSVP Form Handler & Guestlist State
         let guests = [
-            { name: "Engr. Alex Santos", phone: "09171234567", status: "Attending 🎉" },
-            { name: "Maria Reyes", phone: "09189876543", status: "Attending 🎉" }
+            { name: "Engr. Alex Santos", partySize: "1 Person", status: "Attending 🎉" },
+            { name: "Maria Reyes", partySize: "2 People (+1 Guest)", status: "Attending 🎉" },
+            { name: "Mark Joseph", partySize: "1 Person", status: "Attending 🎉" },
+            { name: "Sarah Jenkins", partySize: "3 People", status: "Attending 🎉" }
         ];
 
         function renderGuests() {
@@ -788,7 +704,6 @@
                 <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs animate-fadeIn">
                     <div>
                         <span class="font-bold text-white">${escapeHtml(g.name)}</span>
-                        <span class="text-slate-400 block">Contact: ${escapeHtml(g.phone)}</span>
                     </div>
                     <span class="bg-green-500/20 text-green-300 px-2.5 py-1 rounded-md font-medium">${escapeHtml(g.status)}</span>
                 </div>
@@ -798,12 +713,12 @@
         function handleRSVP(event) {
             event.preventDefault();
             const name = document.getElementById('guestName').value;
-            const phone = document.getElementById('guestPhone').value;
+            const partySize = "1 Person";
             const attendance = document.getElementById('guestAttendance').value;
 
             guests.unshift({
                 name: name,
-                phone: phone,
+                partySize: partySize,
                 status: attendance
             });
 
@@ -822,30 +737,6 @@
         function escapeHtml(text) {
             const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
             return text.replace(/[&<>"']/g, function(m) { return map[m]; });
-        }
-
-        // 9. Download and Share helpers
-        function downloadCode() {
-            const htmlContent = document.documentElement.outerHTML;
-            const blob = new Blob([htmlContent], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'index.html';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        function shareApp() {
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(window.location.href).then(() => {
-                    alertBox("Invitation link copied to clipboard! Ready to share on Vercel.");
-                });
-            } else {
-                alertBox("URL: " + window.location.href);
-            }
         }
 
         function alertBox(msg) {
