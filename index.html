@@ -168,11 +168,19 @@
             from { transform: translateX(0); }
             to { transform: translateX(calc(-50% - 1rem)); }
         }
+        body { padding-bottom: 76px; }
         #holidayMessagesTrack {
+            animation-play-state: running;
             display: flex;
             width: max-content;
             animation-timing-function: linear;
             animation-iteration-count: infinite;
+        }
+        #holidayMessagesTrack:hover, #holidayMessagesTrack:focus-within {
+            animation-play-state: paused !important;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #holidayMessagesTrack { animation: none !important; }
         }
         .holiday-marquee-sequence {
             display: flex;
@@ -490,16 +498,14 @@
     </section>
 
     <!-- Holiday Greetings Marquee -->
-    <section id="holidayMessages" class="py-8 px-4 bg-slate-950/80 border-y border-amber-400/10">
-        <div class="max-w-5xl mx-auto">
-            <div class="flex items-center gap-3 mb-3 justify-center">
-                <span class="text-amber-300 text-lg">🎄</span>
-                <h3 class="text-xs font-bold uppercase tracking-[0.25em] text-amber-300">Holiday Greetings</h3>
-                <span class="text-amber-300 text-lg">🎄</span>
-            </div>
-            <div class="relative overflow-hidden rounded-2xl border border-amber-400/20 bg-slate-900/80 shadow-lg">
-                <div id="holidayMessagesTrack" class="flex w-max items-center gap-8 py-4 px-6">
-                    <span class="text-sm text-slate-400">Loading holiday greetings...</span>
+    <section id="holidayMessages" class="fixed bottom-0 inset-x-0 z-40 bg-slate-950/95 border-t border-amber-400/30 shadow-[0_-6px_28px_rgba(0,0,0,0.45)] backdrop-blur-lg" aria-label="Holiday greetings">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2">
+            <div class="flex items-center gap-2 sm:gap-4">
+                <h3 class="flex-none text-[10px] sm:text-xs font-bold uppercase tracking-widest text-amber-300 whitespace-nowrap"><span aria-hidden="true">🎄</span> <span class="hidden sm:inline">Holiday Greetings</span><span class="sm:hidden">Greetings</span></h3>
+                <div class="relative min-w-0 flex-1 overflow-hidden rounded-lg border border-amber-400/20 bg-slate-900/80" title="Hover to pause greetings">
+                    <div id="holidayMessagesTrack" class="flex w-max items-center gap-8 py-2 px-3" aria-live="off">
+                        <span class="text-sm text-slate-400">Loading holiday greetings...</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1047,7 +1053,7 @@
                     '<div class="holiday-marquee-sequence">' + items + '</div>' +
                     '<div class="holiday-marquee-sequence" aria-hidden="true">' + items + '</div>';
                 track.classList.remove('centered');
-                track.style.animation = 'holidayMarquee 28s linear infinite';
+                track.style.animation = 'holidayMarquee 75s linear infinite';
             });
         }
 
