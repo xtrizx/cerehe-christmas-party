@@ -590,24 +590,6 @@
                             </button>
                         </div>
                     </div>
-                    <div id="guestEditor" class="hidden mb-4 bg-slate-800/80 border border-amber-400/30 rounded-xl p-4">
-                        <div id="guestPassStep">
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Enter Edit Pass</label>
-                            <div class="flex gap-2">
-                                <input type="password" id="guestEditPass" placeholder="Enter pass" class="flex-1 bg-slate-900 border border-white/20 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400">
-                                <button type="button" onclick="verifyGuestEditPass()" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs">Unlock</button>
-                            </div>
-                            <p id="guestPassError" class="hidden text-xs text-red-300 mt-2">Incorrect pass.</p>
-                        </div>
-                        <div id="guestEditControls" class="hidden">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-xs font-bold uppercase tracking-wider text-amber-300">Edit Confirmed Guests</span>
-                                <button type="button" onclick="closeGuestEditor()" class="text-xs text-slate-400 hover:text-white">Close</button>
-                            </div>
-                            <div id="guestEditList" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
-                        </div>
-                    </div>
-
                     <div id="guestListContainer" class="space-y-2 max-h-48 overflow-y-auto pr-2"></div>
                 </div>
             </div>
@@ -621,6 +603,31 @@
             <p>© 2026 Cosplay Christmas Party. All rights reserved. Designed for the ultimate festive holiday celebration.</p>
         </div>
     </footer>
+
+    <!-- Full-screen guest management modal. RSVP submissions remain unchanged. -->
+    <div id="guestEditor" class="hidden fixed inset-0 z-[80] bg-slate-950/85 backdrop-blur-sm p-3 sm:p-6 items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="guestEditorTitle" onclick="if(event.target === this) closeGuestEditor()">
+        <div class="bg-slate-900 border border-amber-400/40 rounded-2xl shadow-2xl w-full max-w-5xl h-[min(88vh,850px)] flex flex-col overflow-hidden" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between gap-4 px-5 sm:px-7 py-4 border-b border-white/10 bg-slate-800/70 shrink-0">
+                <div>
+                    <h2 id="guestEditorTitle" class="font-bold text-amber-300 text-lg sm:text-xl">Manage Confirmed Guests</h2>
+                    <p class="text-xs text-slate-400 mt-1">Review submitted greetings and approve those you want displayed.</p>
+                </div>
+                <button type="button" onclick="closeGuestEditor()" class="text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 w-10 h-10 shrink-0 rounded-lg" aria-label="Close guest management"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="guestPassStep" class="p-5 sm:p-7 w-full max-w-xl mx-auto">
+                <label for="guestEditPass" class="block text-sm font-bold text-slate-200 mb-3">Admin password</label>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="password" id="guestEditPass" placeholder="Enter admin password" class="min-w-0 flex-1 bg-slate-950 border border-white/20 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400" onkeydown="if(event.key==='Enter') verifyGuestEditPass()">
+                    <button type="button" onclick="verifyGuestEditPass()" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-6 py-3 rounded-lg text-sm">Unlock</button>
+                </div>
+                <p id="guestPassError" class="hidden text-sm text-red-300 mt-3" role="alert">Incorrect password.</p>
+            </div>
+            <div id="guestEditControls" class="hidden flex-1 min-h-0 flex flex-col">
+                <div class="px-5 sm:px-7 py-3 border-b border-white/10 text-sm text-slate-300 shrink-0">Review guest entries below. Messages marked <span class="text-amber-300 font-semibold">Pending approval</span> are not public.</div>
+                <div id="guestEditList" class="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-3 content-start"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- Printed Invitation Card Modal -->
     <div id="printedCardModal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4" onclick="closePrintedModal()">
@@ -1117,7 +1124,10 @@
         }
 
         function openGuestEditor() {
-            document.getElementById('guestEditor').classList.remove('hidden');
+            const editor = document.getElementById('guestEditor');
+            editor.classList.remove('hidden');
+            editor.classList.add('flex');
+            document.body.style.overflow = 'hidden';
             document.getElementById('guestPassStep').classList.remove('hidden');
             document.getElementById('guestEditControls').classList.add('hidden');
             document.getElementById('guestEditPass').value = '';
@@ -1156,7 +1166,11 @@
         }
 
         function closeGuestEditor() {
-            document.getElementById('guestEditor').classList.add('hidden');
+            const editor = document.getElementById('guestEditor');
+            editor.classList.add('hidden');
+            editor.classList.remove('flex');
+            document.body.style.overflow = '';
+            document.getElementById('guestEditPass').value = '';
             adminPassword = '';
         }
 
